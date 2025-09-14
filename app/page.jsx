@@ -363,13 +363,35 @@ function About() {
             District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
             robust drafting—focusing on litigation strategy, precise pleadings, and pragmatic, results-oriented advice.
           </p>
-          <div className="mt-6 grid gap-3 text-sm text-white/80"><div className="flex items-center gap-2"><Phone className="w-4 h-4" /><a href={`tel:${ADVOCATE.phone.replace(/ /g, "")}`} className="hover:underline">{ADVOCATE.phone}</a></div>
-            <div className="flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-sm bg-white/20" />Languages: English • Marathi (मराठी) • Hindi (हिन्दी)</div>
-          </div>
-            <div className="flex items-center gap-2"><Mail className="w-4 h-4" /><a href={`mailto:${ADVOCATE.email}`} className="hover:underline">{ADVOCATE.email}</a></div>
-            <div className="flex items-center gap-2"><MapPin className="w-4 h-4" />{ADVOCATE.address}</div>
+
+          {/* Keep all four lines inside the same grid container */}
+          <div className="mt-6 grid gap-3 text-sm text-white/80">
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="hover:underline">
+                {ADVOCATE.phone}
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              <a href={`mailto:${ADVOCATE.email}`} className="hover:underline">
+                {ADVOCATE.email}
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              {ADVOCATE.address}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-4 h-4 rounded-sm bg-white/20" />
+              Languages: English • Marathi (मराठी) • Hindi (हिन्दी)
+            </div>
           </div>
         </div>
+
         <div>
           <Card className="bg-white/5 border-white/10 rounded-2xl">
             <CardContent className="p-6">
