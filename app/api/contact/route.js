@@ -1,40 +1,47 @@
 // app/api/contact/route.js
-export async function POST(req) {
-  try {
-    const form = await req.formData();
-    const name = form.get("name");
-    const contact = form.get("contact");
-    const message = form.get("message");
+// Ensure this file does NOT include "use client"
 
-    import { Resend } from "resend";
+export const runtime = "nodejs"; // enforce Node runtime (safer for email libs)
+
+import { Resend } from "resend";
+
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// CHANGE THESE:
+const TO_EMAIL = "thesahilkotharigmail@gmail.com".replace("gmail", "gmail."); // <-- replace with your real inbox (example obfuscated)
+const FROM_EMAIL = "web@kotharivakil.in"; // must be a verified sender in Resend (or use a Resend-provided test sender)
+
+// Basic validation helper
+function badRequest(msg) {
+  return new Response(msg, { status: 400, headers: { "content-type": "text/plain" } });
+}
 
 export async function POST(req) {
   try {
     const data = await req.formData();
-    const name = data.get("name");
-    const contact = data.get("contact");
-    const message = data.get("message");
+    const name = (data.get("name") || "").toString().trim();
+    const contact = (data.get("contact") || "").toString().trim();
+    const message = (data.get("message") || "").toString().trim();
 
-    await resend.emails.send({
-      from: "web@your-sender.com", // must be a verified sender
-      to: "thesahilkothari@gmail.com",
-      subject: "New website enquiry",
-      text: `Name: ${name}\nContact: ${contact}\n\n${message}`,
-    });
+    if (!name || !contact || !message) {
+      return badRequest("Missing required fields");
+    }
 
-    return new Response("OK", { status: 200 });
-  } catch (e) {
-    console.error(e);
-    return new Response("Error", { status: 500 });
-  }
-}
+    // Send email with Resend
+    if (!process.env.RESEND_API_KEY) {
+      console.warn("[contact] RESEND_API_KEY is not set; skipping email send.");
+    } else {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: TO_EMAIL,
+        subject: `New enquiry from ${name}`,
+        text: `Name: ${name}\nContact: ${contact}\n\n${message}`,
+      });
+    }
 
-    // Example with Resend shown below.
-
-    return new Response("OK", { status: 200 });
+    return new Response("OK", { status: 200, headers: { "content-type": "text/plain" } });
   } catch (err) {
-    console.error(err);
-    return new Response("Error", { status: 500 });
+    console.error("[contact] error", err);
+    return new Response("Error", { status: 500, headers: { "content-type": "text/plain" } });
   }
 }
