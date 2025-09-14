@@ -2,12 +2,11 @@
 export default function sitemap() {
   const base = "https://www.kotharivakil.in";
 
-  // IMPORTANT: absolute URLs only, and only URLs you actually serve (200)
-  // Start simple with just the homepage; we can add sections later.
+  // Only include real pages (no #anchors). Your site is a single page right now.
   return [
     {
       url: `${base}/`,
-      lastModified: new Date().toISOString(), // ISO 8601 is valid
+      lastModified: new Date().toISOString(), // ISO 8601 string
       changeFrequency: "weekly",
       priority: 1.0,
     },
