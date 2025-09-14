@@ -4,7 +4,8 @@ export const runtime = "nodejs";
 import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM_EMAIL = "web@kotharivakil.in"; // must be a verified sender in Resend
+// Must be a verified sender in Resend, or use their test sender
+const FROM_EMAIL = "web@kotharivakil.in";
 const TO_EMAIL = "thesahilkothari@gmail.com";
 
 function badRequest(msg) {
