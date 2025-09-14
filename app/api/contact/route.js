@@ -1,17 +1,17 @@
 // app/api/contact/route.js
-// Ensure this file does NOT include "use client"
+// Server-only file. Do NOT add "use client" here.
 
-export const runtime = "nodejs"; // enforce Node runtime (safer for email libs)
+export const runtime = "nodejs"; // Node runtime is required for most email libs
 
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// CHANGE THESE:
-const TO_EMAIL = "thesahilkotharigmail@gmail.com".replace("gmail", "gmail."); // <-- replace with your real inbox (example obfuscated)
-const FROM_EMAIL = "web@kotharivakil.in"; // must be a verified sender in Resend (or use a Resend-provided test sender)
+// Set these to your real addresses.
+// FROM must be a verified sender in Resend (or a Resend test sender during dev).
+const FROM_EMAIL = "web@kotharivakil.in";
+const TO_EMAIL = "thesahilkothari@gmail.com";
 
-// Basic validation helper
 function badRequest(msg) {
   return new Response(msg, { status: 400, headers: { "content-type": "text/plain" } });
 }
@@ -23,13 +23,10 @@ export async function POST(req) {
     const contact = (data.get("contact") || "").toString().trim();
     const message = (data.get("message") || "").toString().trim();
 
-    if (!name || !contact || !message) {
-      return badRequest("Missing required fields");
-    }
+    if (!name || !contact || !message) return badRequest("Missing required fields");
 
-    // Send email with Resend
     if (!process.env.RESEND_API_KEY) {
-      console.warn("[contact] RESEND_API_KEY is not set; skipping email send.");
+      console.warn("[contact] RESEND_API_KEY missing — not sending email");
     } else {
       await resend.emails.send({
         from: FROM_EMAIL,
