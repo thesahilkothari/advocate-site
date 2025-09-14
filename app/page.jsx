@@ -21,6 +21,9 @@ const CardContent = ({ className = "", children }) => (
 );
 
 // --- Config (edit these) ---
+// If using Formspree, set your form ID here (e.g., "f/abcdwxyz")
+const FORMSPREE_ID = "f/xblaejln";
+
 const ADVOCATE = {
   name: "Adv. Sahil S. Kothari",
   enrollment: "MAH/3210/2024",
@@ -393,49 +396,36 @@ function About() {
 }
 
 function Contact() {
-  const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState(null); // 'ok' | 'error' | null
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setSubmitting(true);
-    setResult(null);
-    try {
-      const form = e.currentTarget;
-      const fd = new FormData(form);
-      const res = await fetch('/api/contact', { method: 'POST', body: fd });
-      if (res.ok) {
-        setResult('ok');
-        form.reset();
-      } else {
-        setResult('error');
-      }
-    } catch (err) {
-      setResult('error');
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   return (
+
     <section id="contact" className="py-12">
       <h2 className="text-2xl font-semibold">Contact & Consultation</h2>
       <div className="mt-6 grid md:grid-cols-2 gap-8 items-start">
         <Card className="bg-white/5 border-white/10 rounded-2xl">
           <CardContent className="p-6">
             <h3 className="font-medium">Send a Message</h3>
-            <p className="text-sm text-white/70 mt-1">This form sends securely to a serverless endpoint at /api/contact.</p>
-            <form className="mt-4 grid gap-3" onSubmit={handleSubmit}>
+            <p className="text-sm text-white/70 mt-1">This form sends via Formspree to your inbox.</p>
+            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/${FORMSPREE_ID}`}>
+              {/* Honeypot field to reduce spam */}
+              <div className="hidden" aria-hidden="true">
+                <label>
+                  Do not fill this out:
+                  <input type="text" name="company" tabIndex="-1" autoComplete="off" />
+                </label>
+              </div>
+
+              {/* Real fields */}
               <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
-              <Input required name="contact" placeholder="Email or Phone" className="bg-white/10 border-white/10" />
+              <Input required type="email" name="email" placeholder="Email" className="bg-white/10 border-white/10" />
+              <Input name="phone" placeholder="Phone (optional)" className="bg-white/10 border-white/10" />
               <Textarea required name="message" rows={4} placeholder="Briefly describe your matter (avoid confidential info)" className="bg-white/10 border-white/10" />
-              <Button type="submit" className="rounded-2xl" disabled={submitting}>{submitting ? 'Sending…' : 'Submit'}</Button>
-              {result === 'ok' && (
-                <div className="text-xs text-emerald-400 mt-1">Thanks! Your message has been sent.</div>
-              )}
-              {result === 'error' && (
-                <div className="text-xs text-red-400 mt-1">Sorry, something went wrong. Please try again.</div>
-              )}
+
+              {/* Optional metadata */}
+              <input type="hidden" name="_subject" value="New website enquiry" />
+              <input type="hidden" name="_format" value="plain" />
+              <input type="hidden" name="_next" value={`${ADVOCATE.domain}/#thank-you`} />
+
+              <Button type="submit" className="rounded-2xl">Submit</Button>
             </form>
           </CardContent>
         </Card>
