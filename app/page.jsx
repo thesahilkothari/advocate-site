@@ -137,6 +137,8 @@ function HeadMeta() {
     upsert('meta[name="robots"]', 'meta', { name: 'robots', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' });
     upsert('meta[name="description"]', 'meta', { name: 'description', content: `${ADVOCATE.name} — ${ADVOCATE.practice}. Strategic litigation, precise drafting, and practical advice.` });
     upsert('meta[name="theme-color"]', 'meta', { name: 'theme-color', content: '#0B0F14' });
+    upsert('meta[name="keywords"]', 'meta', { name: 'keywords', content: 'advocate, lawyer, vakil, lawyer from Baramati, Baramati advocate, high court advocate, Bombay High Court lawyer, Maharashtra lawyer, legal services, civil litigation, criminal law, real estate, RERA, trusts and societies, mediation, accredited mediator' });
+
 
     // Open Graph
     upsert('meta[property="og:site_name"]', 'meta', { property: 'og:site_name', content: 'Kothari Law Chambers' });
@@ -363,10 +365,13 @@ function About() {
         <div>
           <h2 className="text-2xl font-semibold">About the Advocate</h2>
           <p className="mt-4 text-white/80 text-sm leading-relaxed">
-            {ADVOCATE.name} (Enrl. {ADVOCATE.enrollment}) practices across Maharashtra with appearances before
-            District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
-            robust drafting—focusing on litigation strategy, precise pleadings, and pragmatic, results-oriented advice.
-          </p>
+  {ADVOCATE.name} (Enrl. {ADVOCATE.enrollment}) practices across Maharashtra with appearances before
+  District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
+  robust drafting—focusing on litigation strategy, precise pleadings, and pragmatic, results-oriented advice.
+  As an advocate/lawyer (vakil) based in Baramati and appearing before the Bombay High Court, I assist clients
+  across Maharashtra in civil, criminal, real estate/RERA, and trust & society matters.
+</p>
+
           <div className="mt-6 grid gap-3 text-sm text-white/80">
             <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><a href={`tel:${ADVOCATE.phone.split(' ').join('')}`} className="hover:underline">{ADVOCATE.phone}</a></div>
             <div className="flex items-center gap-2"><Mail className="w-4 h-4" /><a href={`mailto:${ADVOCATE.email}`} className="hover:underline">{ADVOCATE.email}</a></div>
@@ -547,6 +552,7 @@ function SchemaOrg() {
       telephone: ADVOCATE.phone,
       url,
       image: ADVOCATE.ogImage || undefined,
+      alternateName: ["Kothari Vakil","Advocate Sahil Kothari","Lawyer from Baramati","High Court Advocate"],
       sameAs: [`https://wa.me/${ADVOCATE.whatsapp}`]
     });
 
