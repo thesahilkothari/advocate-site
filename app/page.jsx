@@ -441,7 +441,6 @@ function Contact() {
               <div className="mt-1">{ADVOCATE.address}</div>
               <div className="mt-3"><span className="text-white/60">Phone:</span> <a className="hover:underline" href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`}>{ADVOCATE.phone}</a></div>
               <div><span className="text-white/60">Email:</span> <a className="hover:underline" href={`mailto:${ADVOCATE.email}`}>{ADVOCATE.email}</a></div>
-              $1
               <div className="mt-3"><a className="underline hover:text-white" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADVOCATE.address)}`}>Open in Google Maps</a></div>
             </CardContent>
           </Card>
