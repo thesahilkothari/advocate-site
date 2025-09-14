@@ -1,6 +1,4 @@
-export default async function sitemap() {
-  const base = "https://YOURDOMAIN";
-  return [
-    { url: `${base}/`, lastModified: new Date().toISOString() },
-  ];
+export default function sitemap() {
+  const base = "https://www.kotharivakil.in";
+  return [{ url: `${base}/`, lastModified: new Date().toISOString() }];
 }
