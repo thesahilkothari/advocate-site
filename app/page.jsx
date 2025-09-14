@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Calendar, Gavel, Scale, Phone, Mail, MapPin, ChevronRight, Shield, Users, MessageSquare, FileText, Building2, Landmark, CheckCircle, Star, Infinity } from "lucide-react";
 
 // Lightweight UI shims (remove if you later add shadcn/ui)
@@ -121,7 +122,7 @@ function Header({ sticky }) {
     <header className={`w-full top-0 z-40 transition-all ${sticky ? "sticky bg-[#0B0F14]/80 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src={ADVOCATE.logo} alt="Logo" className="w-9 h-9 rounded-2xl object-cover border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
+          <Image src={ADVOCATE.logo} alt="Logo" width={36} height={36} className="w-9 h-9 rounded-2xl object-cover border border-white/10" />
           <div>
             <div className="font-semibold leading-tight">{ADVOCATE.name}</div>
             <div className="text-xs text-white/60">Enr. {ADVOCATE.enrollment}</div>
@@ -158,8 +159,8 @@ function Hero() {
         <div className="relative">
           <div className="mb-4 flex justify-center">
             <div className="relative">
-              <img src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" onError={(e)=>{e.currentTarget.style.display='none'}} />
-              <img src={ADVOCATE.logo} alt="Logo" className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" onError={(e)=>{e.currentTarget.style.display='none'}} />
+              <Image src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} width={448} height={448} priority className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" />
+              <Image src={ADVOCATE.logo} alt="Logo" width={40} height={40} className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" />
             </div>
           </div>
           <Card className="bg-white/5 border-white/10 rounded-3xl shadow-2xl">
@@ -419,7 +420,7 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-white/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-white">
-            <img src={ADVOCATE.logo} alt="Logo" className="w-5 h-5 rounded-md border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            <Image src={ADVOCATE.logo} alt="Logo" width={20} height={20} className="w-5 h-5 rounded-md border border-white/10" />
             <span>{ADVOCATE.name}</span>
           </div>
           <div>Enrl. {ADVOCATE.enrollment} • {ADVOCATE.practice}</div>
