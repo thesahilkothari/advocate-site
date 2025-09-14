@@ -31,6 +31,8 @@ const ADVOCATE = {
   whatsapp: "91967393166", // numeric international format without +
   logo: "/logo-mark.svg", // place your logo in /public/logo-mark.svg
   photo: "/ssk-photo.png", // place your portrait in /public/ssk-photo.png
+  domain: "https://www.kotharivakil.in",
+  ogImage: "/og.png" // optional: add a 1200x630 image at /public/og.png
 };
 
 const PRACTICE_AREAS = [
@@ -109,18 +111,50 @@ export default function Site() {
 
 function HeadMeta() {
   useEffect(() => {
+    const base = ADVOCATE.domain || (typeof window !== 'undefined' ? window.location.origin : '');
+    const currentUrl = typeof window !== 'undefined' ? (base + window.location.pathname) : base;
+
+    // Title
     document.title = `${ADVOCATE.name} | ${ADVOCATE.practice}`;
-    const meta = [
-      { name: "description", content: `${ADVOCATE.name} — ${ADVOCATE.practice}. Strategic litigation, precise drafting, and practical advice.` },
-      { property: "og:title", content: `${ADVOCATE.name} — Law Chambers` },
-      { property: "og:description", content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` },
-      { property: "og:type", content: "website" },
-    ];
-    meta.forEach(m => {
-      const el = document.createElement("meta");
-      Object.entries(m).forEach(([k, v]) => el.setAttribute(k, v));
-      document.head.appendChild(el);
-    });
+
+    // Helper to add/update tags uniquely
+    const upsert = (selector, tag, attrs) => {
+      let el = document.head.querySelector(selector);
+      if (!el) { el = document.createElement(tag); document.head.appendChild(el); }
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    };
+
+    // Canonical & hreflang
+    upsert('link[rel="canonical"]', 'link', { rel: 'canonical', href: currentUrl });
+    upsert('link[rel="alternate"][hreflang="x-default"]', 'link', { rel: 'alternate', href: currentUrl, hreflang: 'x-default' });
+    upsert('link[rel="alternate"][hreflang="en-IN"]', 'link', { rel: 'alternate', href: currentUrl, hreflang: 'en-IN' });
+
+    // Basic meta
+    upsert('meta[name="viewport"]', 'meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' });
+    upsert('meta[name="robots"]', 'meta', { name: 'robots', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' });
+    upsert('meta[name="description"]', 'meta', { name: 'description', content: `${ADVOCATE.name} — ${ADVOCATE.practice}. Strategic litigation, precise drafting, and practical advice.` });
+    upsert('meta[name="theme-color"]', 'meta', { name: 'theme-color', content: '#0B0F14' });
+
+    // Open Graph
+    upsert('meta[property="og:site_name"]', 'meta', { property: 'og:site_name', content: 'Kothari Law Chambers' });
+    upsert('meta[property="og:title"]', 'meta', { property: 'og:title', content: `${ADVOCATE.name} — Law Chambers` });
+    upsert('meta[property="og:description"]', 'meta', { property: 'og:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
+    upsert('meta[property="og:type"]', 'meta', { property: 'og:type', content: 'website' });
+    upsert('meta[property="og:url"]', 'meta', { property: 'og:url', content: currentUrl });
+    if (ADVOCATE.ogImage) {
+      upsert('meta[property="og:image"]', 'meta', { property: 'og:image', content: ADVOCATE.ogImage });
+    }
+
+    // Twitter Card
+    upsert('meta[name="twitter:card"]', 'meta', { name: 'twitter:card', content: 'summary_large_image' });
+    upsert('meta[name="twitter:title"]', 'meta', { name: 'twitter:title', content: `${ADVOCATE.name} — Law Chambers` });
+    upsert('meta[name="twitter:description"]', 'meta', { name: 'twitter:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
+    if (ADVOCATE.ogImage) {
+      upsert('meta[name="twitter:image"]', 'meta', { name: 'twitter:image', content: ADVOCATE.ogImage });
+    }
+
+    // Favicons (assumes you will add these in /public)
+    upsert('link[rel="icon"]', 'link', { rel: 'icon', href: '/favicon.ico' });
   }, []);
   return null;
 }
@@ -497,9 +531,13 @@ function Disclaimer({ onAccept }) {
 
 function SchemaOrg() {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify({
+    const base = ADVOCATE.domain || (typeof window !== 'undefined' ? window.location.origin : '');
+    const url = typeof window !== 'undefined' ? (base + window.location.pathname) : base;
+
+    const scripts = [];
+
+    // LegalService schema
+    scripts.push({
       "@context": "https://schema.org",
       "@type": "LegalService",
       name: ADVOCATE.name,
@@ -512,12 +550,54 @@ function SchemaOrg() {
       },
       email: ADVOCATE.email,
       telephone: ADVOCATE.phone,
-      url: typeof window !== 'undefined' ? window.location.href : undefined,
-      sameAs: [
-        `https://wa.me/${ADVOCATE.whatsapp}`
+      url,
+      image: ADVOCATE.ogImage || undefined,
+      sameAs: [`https://wa.me/${ADVOCATE.whatsapp}`]
+    });
+
+    // WebSite schema (basic)
+    scripts.push({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Kothari Law Chambers",
+      url: base,
+      publisher: { "@type": "Organization", name: ADVOCATE.name }
+    });
+
+    // Breadcrumbs (simple)
+    scripts.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: base }
       ]
     });
-    document.head.appendChild(script);
+
+    // FAQ (enhanced visibility in SERP)
+    scripts.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Do you appear in the Bombay High Court?",
+          acceptedAnswer: { "@type": "Answer", text: "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra." }
+        },
+        {
+          "@type": "Question",
+          name: "How can I schedule a consultation?",
+          acceptedAnswer: { "@type": "Answer", text: "Use the contact form or call the listed number to schedule an appointment. Video consultations are available by prior booking." }
+        }
+      ]
+    });
+
+    // Inject JSON-LD
+    scripts.forEach(obj => {
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.text = JSON.stringify(obj);
+      document.head.appendChild(s);
+    });
   }, []);
   return null;
 }
