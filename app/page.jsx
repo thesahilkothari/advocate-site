@@ -28,6 +28,8 @@ const ADVOCATE = {
   address: "Shop No. 14, Vardhaman Capital, Suryanagari, Baramati - 413133, Dist- Pune",
   practice: "District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
   whatsapp: "91967393166", // numeric international format without +
+  logo: "/logo-mark.svg", // put your logo file in /public/logo-mark.svg
+  photo: "/sahil-portrait.jpg", // put your portrait photo in /public/sahil-portrait.jpg
 };
 
 const PRACTICE_AREAS = [
@@ -119,7 +121,7 @@ function Header({ sticky }) {
     <header className={`w-full top-0 z-40 transition-all ${sticky ? "sticky bg-[#0B0F14]/80 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-2xl bg-white/10 grid place-items-center"><Scale className="w-5 h-5" /></div>
+          <img src={ADVOCATE.logo} alt="Logo" className="w-9 h-9 rounded-2xl object-cover border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
           <div>
             <div className="font-semibold leading-tight">{ADVOCATE.name}</div>
             <div className="text-xs text-white/60">Enr. {ADVOCATE.enrollment}</div>
@@ -154,6 +156,12 @@ function Hero() {
           </div>
         </div>
         <div className="relative">
+          <div className="mb-4 flex justify-center">
+            <div className="relative">
+              <img src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl" onError={(e)=>{e.currentTarget.style.display='none'}} />
+              <img src={ADVOCATE.logo} alt="Logo" className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            </div>
+          </div>
           <Card className="bg-white/5 border-white/10 rounded-3xl shadow-2xl">
             <CardContent className="p-6">
               <div className="grid grid-cols-2 gap-4 text-sm">
@@ -410,7 +418,10 @@ function Footer() {
     <footer className="mt-16 border-t border-white/10">
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-white/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <div className="text-white">{ADVOCATE.name}</div>
+          <div className="flex items-center gap-2 text-white">
+            <img src={ADVOCATE.logo} alt="Logo" className="w-5 h-5 rounded-md border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            <span>{ADVOCATE.name}</span>
+          </div>
           <div>Enrl. {ADVOCATE.enrollment} • {ADVOCATE.practice}</div>
         </div>
         <div className="flex gap-4 items-center">
