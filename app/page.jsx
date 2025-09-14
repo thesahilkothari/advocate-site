@@ -29,7 +29,7 @@ const ADVOCATE = {
   practice: "District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
   whatsapp: "91967393166", // numeric international format without +
   logo: "/logo-mark.svg", // put your logo file in /public/logo-mark.svg
-  photo: "/sahil-portrait.jpg", // put your portrait photo in /public/sahil-portrait.jpg
+  photo: "/ssk-photo.png", // put your portrait photo in /public/ssk-photo.png
 };
 
 const PRACTICE_AREAS = [
@@ -158,7 +158,7 @@ function Hero() {
         <div className="relative">
           <div className="mb-4 flex justify-center">
             <div className="relative">
-              <img src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl" onError={(e)=>{e.currentTarget.style.display='none'}} />
+              <img src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" onError={(e)=>{e.currentTarget.style.display='none'}} />
               <img src={ADVOCATE.logo} alt="Logo" className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" onError={(e)=>{e.currentTarget.style.display='none'}} />
             </div>
           </div>
