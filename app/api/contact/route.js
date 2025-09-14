@@ -1,15 +1,10 @@
 // app/api/contact/route.js
-// Server-only file. Do NOT add "use client" here.
-
-export const runtime = "nodejs"; // Node runtime is required for most email libs
+export const runtime = "nodejs";
 
 import { Resend } from "resend";
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Set these to your real addresses.
-// FROM must be a verified sender in Resend (or a Resend test sender during dev).
-const FROM_EMAIL = "web@kotharivakil.in";
+const FROM_EMAIL = "web@kotharivakil.in"; // must be a verified sender in Resend
 const TO_EMAIL = "thesahilkothari@gmail.com";
 
 function badRequest(msg) {
