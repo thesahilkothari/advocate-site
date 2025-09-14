@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { Analytics } from "@vercel/analytics/next";
 import { Calendar, Gavel, Scale, Phone, Mail, MapPin, ChevronRight, Shield, Users, MessageSquare, FileText, Building2, Landmark, CheckCircle, Star, Infinity } from "lucide-react";
 
 // NOTE: Using plain <img> tags instead of next/image to avoid sandbox/runtime issues.
