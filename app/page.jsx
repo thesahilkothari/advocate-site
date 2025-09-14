@@ -115,7 +115,7 @@ function HeadMeta() {
     const currentUrl = typeof window !== 'undefined' ? (base + window.location.pathname) : base;
 
     // Title
-    document.title = `${ADVOCATE.name} | ${ADVOCATE.practice}`;
+    document.title = `Kothari Vakil | ${ADVOCATE.name} — ${ADVOCATE.practice}`;
 
     // Helper to add/update tags uniquely
     const upsert = (selector, tag, attrs) => {
@@ -137,7 +137,7 @@ function HeadMeta() {
 
     // Open Graph
     upsert('meta[property="og:site_name"]', 'meta', { property: 'og:site_name', content: 'Kothari Law Chambers' });
-    upsert('meta[property="og:title"]', 'meta', { property: 'og:title', content: `${ADVOCATE.name} — Law Chambers` });
+    upsert('meta[property="og:title"]', 'meta', { property: 'og:title', content: `Kothari Vakil | ${ADVOCATE.name} — Law Chambers` });
     upsert('meta[property="og:description"]', 'meta', { property: 'og:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
     upsert('meta[property="og:type"]', 'meta', { property: 'og:type', content: 'website' });
     upsert('meta[property="og:url"]', 'meta', { property: 'og:url', content: currentUrl });
@@ -147,7 +147,7 @@ function HeadMeta() {
 
     // Twitter Card
     upsert('meta[name="twitter:card"]', 'meta', { name: 'twitter:card', content: 'summary_large_image' });
-    upsert('meta[name="twitter:title"]', 'meta', { name: 'twitter:title', content: `${ADVOCATE.name} — Law Chambers` });
+    upsert('meta[name="twitter:title"]', 'meta', { name: 'twitter:title', content: `Kothari Vakil | ${ADVOCATE.name} — Law Chambers` });
     upsert('meta[name="twitter:description"]', 'meta', { name: 'twitter:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
     if (ADVOCATE.ogImage) {
       upsert('meta[name="twitter:image"]', 'meta', { name: 'twitter:image', content: ADVOCATE.ogImage });
@@ -188,7 +188,8 @@ function Hero() {
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Practical, precise and proactive legal counsel.</h1>
-          <p className="mt-4 text-white/80">Representing clients before District Courts, Tribunals across Maharashtra, and the Bombay High Court. Focused on clear strategy, meticulous drafting, and effective advocacy.</p>
+          <p className="mt-4 text-white/80">$1</p>
+          <p className="mt-2 text-white/70 text-sm">Also known locally as <strong>Kothari Vakil</strong> — English / Marathi (मराठी) / Hindi (हिन्दी).</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="#contact"><Button className="rounded-2xl">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></Button></a>
             <a href={`mailto:${ADVOCATE.email}`} className="inline-block"><Button className="rounded-2xl border-white/30">Email</Button></a>
@@ -362,8 +363,9 @@ function About() {
             District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
             robust drafting—focusing on litigation strategy, precise pleadings, and pragmatic, results-oriented advice.
           </p>
-          <div className="mt-6 grid gap-3 text-sm text-white/80">
-            <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="hover:underline">{ADVOCATE.phone}</a></div>
+          <div className="mt-6 grid gap-3 text-sm text-white/80">$1
+            <div className="flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-sm bg-white/20" />Languages: English • Marathi (मराठी) • Hindi (हिन्दी)</div>
+          </div>
             <div className="flex items-center gap-2"><Mail className="w-4 h-4" /><a href={`mailto:${ADVOCATE.email}`} className="hover:underline">{ADVOCATE.email}</a></div>
             <div className="flex items-center gap-2"><MapPin className="w-4 h-4" />{ADVOCATE.address}</div>
           </div>
