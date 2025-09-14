@@ -1,4 +1,16 @@
 // app/layout.jsx
+import { Analytics } from '@vercel/analytics/react';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
 export const metadata = {
   title: "Adv. Sahil S. Kothari — Law Chambers",
   description: "Advocate — District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
