@@ -444,7 +444,42 @@ function Contact() {
               <div className="mt-3 text-white/60 text-xs">Consultations by prior appointment. Video consultations available.</div>
             </CardContent>
           </Card>
+          <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
+
+            <CardContent className="p-0">
+
+              <div className="w-full aspect-[16/10]">
+
+                <iframe
+
+                  title="Map to office"
+
+                  src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDcFvWL-7q6FTZcFJiKJEipqFs5ZKtK-jw&q=${encodeURIComponent(ADVOCATE.address)}`}
+
+                  loading="lazy"
+
+                  referrerPolicy="no-referrer-when-downgrade"
+
+                  className="w-full h-full border-0"
+
+                />
+
+              </div>
+
+              <div className="p-3 text-xs text-white/70 flex items-center justify-between">
+
+                <span>Find us on Google Maps</span>
+
+                <a className="underline hover:text-white" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADVOCATE.address)}`}>Open in Google Maps</a>
+
+              </div>
+
+            </CardContent>
+
+          </Card>
+
           <Card className="bg-white/5 border-white/10 rounded-2xl">
+
             <CardContent className="p-5 text-xs text-white/60 leading-relaxed">
               <div className="text-white">Professional Notice</div>
               <p className="mt-2">As per Bar Council of India rules, this website provides general information and does not solicit work or advertise. Visiting or contacting does not create a lawyer–client relationship. No guarantees of outcomes are made.</p>
