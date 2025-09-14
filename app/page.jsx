@@ -441,41 +441,9 @@ function Contact() {
               <div className="mt-1">{ADVOCATE.address}</div>
               <div className="mt-3"><span className="text-white/60">Phone:</span> <a className="hover:underline" href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`}>{ADVOCATE.phone}</a></div>
               <div><span className="text-white/60">Email:</span> <a className="hover:underline" href={`mailto:${ADVOCATE.email}`}>{ADVOCATE.email}</a></div>
-              <div className="mt-3 text-white/60 text-xs">Consultations by prior appointment. Video consultations available.</div>
+              $1
+              <div className="mt-3"><a className="underline hover:text-white" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADVOCATE.address)}`}>Open in Google Maps</a></div>
             </CardContent>
-          </Card>
-          <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
-
-            <CardContent className="p-0">
-
-              <div className="w-full aspect-[16/10]">
-
-                <iframe
-
-                  title="Map to office"
-
-                  src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDcFvWL-7q6FTZcFJiKJEipqFs5ZKtK-jw&q=${encodeURIComponent(ADVOCATE.address)}`}
-
-                  loading="lazy"
-
-                  referrerPolicy="no-referrer-when-downgrade"
-
-                  className="w-full h-full border-0"
-
-                />
-
-              </div>
-
-              <div className="p-3 text-xs text-white/70 flex items-center justify-between">
-
-                <span>Find us on Google Maps</span>
-
-                <a className="underline hover:text-white" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADVOCATE.address)}`}>Open in Google Maps</a>
-
-              </div>
-
-            </CardContent>
-
           </Card>
 
           <Card className="bg-white/5 border-white/10 rounded-2xl">
