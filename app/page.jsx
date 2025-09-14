@@ -337,6 +337,30 @@ function About() {
 }
 
 function Contact() {
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState(null); // 'ok' | 'error' | null
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitting(true);
+    setResult(null);
+    try {
+      const form = e.currentTarget;
+      const fd = new FormData(form);
+      const res = await fetch('/api/contact', { method: 'POST', body: fd });
+      if (res.ok) {
+        setResult('ok');
+        form.reset();
+      } else {
+        setResult('error');
+      }
+    } catch (err) {
+      setResult('error');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <section id="contact" className="py-12">
       <h2 className="text-2xl font-semibold">Contact & Consultation</h2>
@@ -344,12 +368,18 @@ function Contact() {
         <Card className="bg-white/5 border-white/10 rounded-2xl">
           <CardContent className="p-6">
             <h3 className="font-medium">Send a Message</h3>
-            <p className="text-sm text-white/70 mt-1">This form uses Formspree. Replace the action URL with your own endpoint.</p>
-            <form className="mt-4 grid gap-3" method="POST" action="https://formspree.io/f/example">
+            <p className="text-sm text-white/70 mt-1">This form sends securely to a serverless endpoint at /api/contact.</p>
+            <form className="mt-4 grid gap-3" onSubmit={handleSubmit}>
               <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
               <Input required name="contact" placeholder="Email or Phone" className="bg-white/10 border-white/10" />
               <Textarea required name="message" rows={4} placeholder="Briefly describe your matter (avoid confidential info)" className="bg-white/10 border-white/10" />
-              <Button type="submit" className="rounded-2xl">Submit</Button>
+              <Button type="submit" className="rounded-2xl" disabled={submitting}>{submitting ? 'Sending…' : 'Submit'}</Button>
+              {result === 'ok' && (
+                <div className="text-xs text-emerald-400 mt-1">Thanks! Your message has been sent.</div>
+              )}
+              {result === 'error' && (
+                <div className="text-xs text-red-400 mt-1">Sorry, something went wrong. Please try again.</div>
+              )}
             </form>
           </CardContent>
         </Card>
