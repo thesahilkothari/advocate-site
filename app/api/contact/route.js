@@ -1,16 +1,7 @@
 // app/api/contact/route.js
+// Server-only route handler (no "use client")
+
 export const runtime = "nodejs";
-
-import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Must be a verified sender in Resend, or use their test sender
-const FROM_EMAIL = "web@kotharivakil.in";
-const TO_EMAIL = "thesahilkothari@gmail.com";
-
-function badRequest(msg) {
-  return new Response(msg, { status: 400, headers: { "content-type": "text/plain" } });
-}
 
 export async function POST(req) {
   try {
@@ -19,22 +10,17 @@ export async function POST(req) {
     const contact = (data.get("contact") || "").toString().trim();
     const message = (data.get("message") || "").toString().trim();
 
-    if (!name || !contact || !message) return badRequest("Missing required fields");
-
-    if (!process.env.RESEND_API_KEY) {
-      console.warn("[contact] RESEND_API_KEY missing — not sending email");
-    } else {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: TO_EMAIL,
-        subject: `New enquiry from ${name}`,
-        text: `Name: ${name}\nContact: ${contact}\n\n${message}`,
-      });
+    if (!name || !contact || !message) {
+      return new Response("Missing required fields", { status: 400 });
     }
 
+    // Log to Vercel Function logs so you can verify submissions
+    console.log("[/api/contact] submission:", { name, contact, message });
+
+    // If you later want to deliver email, wire Resend/Nodemailer here.
     return new Response("OK", { status: 200, headers: { "content-type": "text/plain" } });
   } catch (err) {
-    console.error("[contact] error", err);
+    console.error("[/api/contact] error:", err);
     return new Response("Error", { status: 500, headers: { "content-type": "text/plain" } });
   }
 }
