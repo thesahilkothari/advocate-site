@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { Calendar, Gavel, Scale, Phone, Mail, MapPin, ChevronRight, Shield, Users, MessageSquare, FileText, Building2, Landmark, CheckCircle, Star, Infinity } from "lucide-react";
 
+// NOTE: Using plain <img> tags instead of next/image to avoid sandbox/runtime issues.
 // Lightweight UI shims (remove if you later add shadcn/ui)
 const Button = ({ className = "", children, ...props }) => (
   <button className={`px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-md ${className}`} {...props}>{children}</button>
@@ -29,8 +29,8 @@ const ADVOCATE = {
   address: "Shop No. 14, Vardhaman Capital, Suryanagari, Baramati - 413133, Dist- Pune",
   practice: "District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
   whatsapp: "91967393166", // numeric international format without +
-  logo: "/logo-mark.svg", // put your logo file in /public/logo-mark.svg
-  photo: "/ssk-photo.png", // put your portrait photo in /public/ssk-photo.png
+  logo: "/logo-mark.svg", // place your logo in /public/logo-mark.svg
+  photo: "/ssk-photo.png", // place your portrait in /public/ssk-photo.png
 };
 
 const PRACTICE_AREAS = [
@@ -75,6 +75,14 @@ export default function Site() {
     localStorage.setItem("bci_disclaimer_ok", "yes");
     setConsented(true);
   };
+
+  // simple runtime checks ("tests") to help validate asset paths in different envs
+  useEffect(() => {
+    const img = new window.Image();
+    img.onload = () => console.info("[check] portrait loaded:", ADVOCATE.photo);
+    img.onerror = () => console.warn("[check] portrait NOT found at:", ADVOCATE.photo);
+    img.src = ADVOCATE.photo + "?v=2"; // cache-bust
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
@@ -122,7 +130,7 @@ function Header({ sticky }) {
     <header className={`w-full top-0 z-40 transition-all ${sticky ? "sticky bg-[#0B0F14]/80 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image src={ADVOCATE.logo} alt="Logo" width={36} height={36} className="w-9 h-9 rounded-2xl object-cover border border-white/10" />
+          <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={36} height={36} className="w-9 h-9 rounded-2xl object-cover border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
           <div>
             <div className="font-semibold leading-tight">{ADVOCATE.name}</div>
             <div className="text-xs text-white/60">Enr. {ADVOCATE.enrollment}</div>
@@ -148,8 +156,8 @@ function Hero() {
           <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Practical, precise and proactive legal counsel.</h1>
           <p className="mt-4 text-white/80">Representing clients before District Courts, Tribunals across Maharashtra, and the Bombay High Court. Focused on clear strategy, meticulous drafting, and effective advocacy.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#contact"><Button size="lg" className="rounded-2xl">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></Button></a>
-            <a href={`mailto:${ADVOCATE.email}`} className="inline-block"><Button variant="outline" className="rounded-2xl border-white/30">Email</Button></a>
+            <a href="#contact"><Button className="rounded-2xl">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></Button></a>
+            <a href={`mailto:${ADVOCATE.email}`} className="inline-block"><Button className="rounded-2xl border-white/30">Email</Button></a>
           </div>
           <div className="mt-6 flex items-center gap-5 text-white/70 text-sm">
             <div className="flex items-center gap-2"><Shield className="w-4 h-4" /> Ethical, confidential advice</div>
@@ -159,8 +167,8 @@ function Hero() {
         <div className="relative">
           <div className="mb-4 flex justify-center">
             <div className="relative">
-              <Image src={ADVOCATE.photo} alt={`${ADVOCATE.name}`} width={448} height={448} priority className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" />
-              <Image src={ADVOCATE.logo} alt="Logo" width={40} height={40} className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" />
+              <img src={`${ADVOCATE.photo}?v=2`} alt={`${ADVOCATE.name}`} width={448} height={448} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" onError={(e)=>{e.currentTarget.style.display='none'}} />
+              <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={40} height={40} className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" onError={(e)=>{e.currentTarget.style.display='none'}} />
             </div>
           </div>
           <Card className="bg-white/5 border-white/10 rounded-3xl shadow-2xl">
@@ -420,7 +428,7 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-white/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-white">
-            <Image src={ADVOCATE.logo} alt="Logo" width={20} height={20} className="w-5 h-5 rounded-md border border-white/10" />
+            <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={20} height={20} className="w-5 h-5 rounded-md border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
             <span>{ADVOCATE.name}</span>
           </div>
           <div>Enrl. {ADVOCATE.enrollment} • {ADVOCATE.practice}</div>
@@ -478,7 +486,7 @@ function Disclaimer({ onAccept }) {
           <div className="mt-5 flex gap-3">
             <Button onClick={onAccept} className="rounded-2xl">I Agree</Button>
             <a href="https://www.barcouncilofindia.org" target="_blank" rel="noreferrer">
-              <Button variant="outline" className="rounded-2xl border-white/30">Learn More</Button>
+              <Button className="rounded-2xl border-white/30">Learn More</Button>
             </a>
           </div>
         </CardContent>
