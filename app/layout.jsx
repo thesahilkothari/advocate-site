@@ -1,3 +1,4 @@
+// app/layout.jsx
 export const metadata = {
   title: "Adv. Sahil S. Kothari — Law Chambers",
   description: "Advocate — District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
