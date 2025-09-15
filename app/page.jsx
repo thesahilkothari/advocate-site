@@ -94,6 +94,19 @@ const COURTS = [
   "Tribunals under State & Central statutes",
 ];
 
+// Site-wide links (used for cross-link blocks)
+const SITE_LINKS = [
+  { href: '/', label: 'Home' },
+  { href: '/civil-litigation', label: 'Civil Litigation' },
+  { href: '/criminal-bail', label: 'Criminal & Bail' },
+  { href: '/rera-real-estate', label: 'RERA & Real Estate' },
+  { href: '/trusts-societies', label: 'Trusts & Societies' },
+  { href: '/family-law', label: 'Family & Matrimonial' },
+  { href: '/drafting-advisory', label: 'Drafting & Advisory' },
+  { href: '/baramati-lawyer', label: 'Baramati Lawyer' },
+  { href: '/pune-lawyer', label: 'Pune Lawyer' },
+];
+
 const TESTIMONIALS = [
   { name: "Client from Pune", text: "Clear strategy, timely updates, and a professional approach. Highly recommended.", rating: 5 },
   { name: "Entrepreneur, Baramati", text: "Drafted and negotiated our development documentation impeccably.", rating: 5 },
@@ -140,6 +153,8 @@ export default function Site() {
         <Testimonials />
         <About />
         <Internships />
+        <GlobalFAQ />
+        <LinksCloud />
         <Contact />
       </main>
       <Footer />
@@ -409,6 +424,45 @@ function Testimonials() {
         ))}
       </div>
       <p className="text-xs text-white/50 mt-3">Disclaimer: Testimonials do not constitute a guarantee of specific outcomes.</p>
+    </section>
+  );
+}
+
+function GlobalFAQ() {
+  const faqs = [
+    { q: 'Do you appear in the Bombay High Court?', a: 'Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra.' },
+    { q: 'How do I start a case or seek an opinion?', a: 'Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices.' },
+    { q: 'Do you handle property/RERA documentation?', a: 'Yes. We assist with development agreements, MAHARERA complaints/compliance, municipal/MRTP and due diligence.' },
+    { q: 'Are video consultations available?', a: 'Yes—by prior appointment. Use the form or call to schedule.' },
+  ];
+  return (
+    <section className="py-12">
+      <h2 className="text-2xl font-semibold">Frequently Asked Questions</h2>
+      <div className="mt-6 grid md:grid-cols-2 gap-4">
+        {faqs.map((f, i) => (
+          <Card key={i} className="bg-white/5 border-white/10 rounded-2xl">
+            <CardContent className="p-5">
+              <details>
+                <summary className="cursor-pointer font-medium text-white">{f.q}</summary>
+                <p className="mt-2 text-sm text-white/80">{f.a}</p>
+              </details>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LinksCloud() {
+  return (
+    <section className="py-8">
+      <h2 className="text-2xl font-semibold">Explore</h2>
+      <div className="mt-4 flex flex-wrap gap-3 text-sm">
+        {SITE_LINKS.map((l, i) => (
+          <a key={i} className="underline hover:text-white" href={l.href}>{l.label}</a>
+        ))}
+      </div>
     </section>
   );
 }
