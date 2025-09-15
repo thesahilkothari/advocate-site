@@ -95,6 +95,7 @@ export default function Site() {
       {!consented && <Disclaimer onAccept={handleConsent} />}
       <Header sticky={sticky} />
       <main className="mx-auto max-w-6xl px-4">
+        <ThankYou />
         <Hero />
         <USPStrip />
         <PracticeAreas />
@@ -102,6 +103,7 @@ export default function Site() {
         <WhyUs />
         <Testimonials />
         <About />
+        <Internships />
         <Contact />
       </main>
       <Footer />
@@ -179,6 +181,7 @@ function Header({ sticky }) {
           <a href="#practice" className="hover:text-white">Practice</a>
           <a href="#courts" className="hover:text-white">Courts</a>
           <a href="#about" className="hover:text-white">About</a>
+          <a href="#internships" className="hover:text-white">Internships</a>
           <a href="#contact" className="hover:text-white">Contact</a>
         </div>
         <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="ml-4"><Button className="rounded-2xl">Call Now</Button></a>
@@ -400,6 +403,56 @@ function About() {
   );
 }
 
+function Internships() {
+  return (
+    <section id="internships" className="py-12">
+      <h2 className="text-2xl font-semibold">Internships</h2>
+      <div className="mt-4 grid md:grid-cols-2 gap-8 items-start">
+        <div>
+          <p className="text-white/80 text-sm leading-relaxed">
+            Opportunities for <strong>law undergraduates</strong> and <strong>law graduates</strong> to intern in one of three modes:
+            <span className="block mt-2">• Remote (research & drafting)</span>
+            <span className="block">• Online (hybrid calls + document work)</span>
+            <span className="block">• Office (Baramati, in-person)</span>
+          </p>
+          <ul className="mt-4 text-white/80 text-sm list-disc list-inside">
+            <li>Areas: civil & criminal procedure, drafting, property/real estate (RERA), trusts & societies, writs/appeals.</li>
+            <li>Eligibility: enrolled in LL.B. (any year) or recent LL.B. graduate.</li>
+            <li>Duration: 3–8 weeks (flexible based on mode and availability).</li>
+          </ul>
+          <p className="mt-4 text-xs text-white/60">Note: This section is informational and does not constitute solicitation. Selection is at sole discretion based on merit and availability.</p>
+        </div>
+        <Card className="bg-white/5 border-white/10 rounded-2xl">
+          <CardContent className="p-6">
+            <h3 className="font-medium">Apply for Internship</h3>
+            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/${FORMSPREE_ID}`}>
+              <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
+              <Input required type="email" name="email" placeholder="Email" className="bg-white/10 border-white/10" />
+              <Input name="phone" placeholder="Phone (optional)" className="bg-white/10 border-white/10" />
+              <input type="hidden" name="_subject" value="Internship Application" />
+              <div>
+                <label className="block text-xs text-white/60 mb-1">Mode</label>
+                <select name="mode" className="w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white">
+                  <option value="Remote">Remote</option>
+                  <option value="Online">Online</option>
+                  <option value="Office (Baramati)">Office (Baramati)</option>
+                </select>
+              </div>
+              <Input name="institution" placeholder="Law School / University" className="bg-white/10 border-white/10" />
+              <Input name="year" placeholder="Current Year or Graduate" className="bg-white/10 border-white/10" />
+              <Input name="window" placeholder="Preferred Dates (e.g., Oct–Nov 2025)" className="bg-white/10 border-white/10" />
+              <Textarea required name="statement" rows={4} placeholder="Brief Statement of Interest" className="bg-white/10 border-white/10" />
+              <input type="hidden" name="_format" value="plain" />
+              <input type="hidden" name="_next" value={`${ADVOCATE.domain}/#thank-you`} />
+              <Button type="submit" className="rounded-2xl">Submit Application</Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   return (
 
@@ -527,6 +580,32 @@ function Disclaimer({ onAccept }) {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function ThankYou() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const check = () => {
+      const hash = window.location.hash || '';
+      // show if redirected back with #thank-you
+      setShow(hash.includes('thank-you'));
+    };
+    check();
+    window.addEventListener('hashchange', check);
+    return () => window.removeEventListener('hashchange', check);
+  }, []);
+  if (!show) return null;
+  return (
+    <div className="my-4 rounded-2xl border border-green-400/30 bg-green-500/10 p-4 text-sm text-green-200 flex items-start gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mt-0.5"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.06-1.06L10.5 12.44 9.03 10.97a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.58-4.62Z" clipRule="evenodd"/></svg>
+      <div className="flex-1">
+        <div className="font-medium text-green-200">Thank you! Your submission has been received.</div>
+        <div className="text-green-100/80 mt-1">We’ll review it and get back to you soon.</div>
+      </div>
+      <button onClick={() => setShow(false)} className="ml-2 px-2 py-1 text-green-100/80 hover:text-white">Dismiss</button>
     </div>
   );
 }
