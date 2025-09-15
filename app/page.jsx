@@ -425,10 +425,10 @@ function Internships() {
         <Card className="bg-white/5 border-white/10 rounded-2xl">
           <CardContent className="p-6">
             <h3 className="font-medium">Apply for Internship</h3>
-            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/${FORMSPREE_ID}`}>
+            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/f/xblaejln`}>
               <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
               <Input required type="email" name="email" placeholder="Email" className="bg-white/10 border-white/10" />
-              <Input name="phone" placeholder="Phone (optional)" className="bg-white/10 border-white/10" />
+              <Input name="phone" placeholder="Phone" className="bg-white/10 border-white/10" />
               <input type="hidden" name="_subject" value="Internship Application" />
               <div>
                 <label className="block text-xs text-white/60 mb-1">Mode</label>
