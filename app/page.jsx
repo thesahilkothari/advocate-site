@@ -417,7 +417,7 @@ function Internships() {
           </p>
           <ul className="mt-4 text-white/80 text-sm list-disc list-inside">
             <li>Areas: civil & criminal procedure, drafting, property/real estate (RERA), trusts & societies, writs/appeals.</li>
-            <li>Eligibility: enrolled in LL.B. (any year) or recent LL.B. graduate.</li>
+            <li>Eligibility: enrolled in LL.B. or LL.M. (any year) or recent LL.B. graduate or LL.M. postgraduate.</li>
             <li>Duration: 3–8 weeks (flexible based on mode and availability).</li>
           </ul>
           <p className="mt-4 text-xs text-white/60">Note: This section is informational and does not constitute solicitation. Selection is at sole discretion based on merit and availability.</p>
