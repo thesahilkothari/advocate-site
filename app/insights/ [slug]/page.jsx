@@ -8,10 +8,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }) {
   const post = POSTS.find((p) => p.slug === params.slug);
   if (!post) return { title: "Not found | Insights" };
-  return {
-    title: `${post.title} | Insights`,
-    description: post.description,
-  };
+  return { title: `${post.title} | Insights`, description: post.description };
 }
 
 export default function Page({ params }) {
@@ -32,17 +29,15 @@ export default function Page({ params }) {
       <h1 className="mt-1 text-3xl font-semibold">{post.title}</h1>
       <p className="mt-2 text-white/80">{post.description}</p>
 
-      <article className="prose prose-invert mt-6 max-w-none">
+      <article className="mt-6 space-y-3 text-white/90">
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
       </article>
 
-      {/* Inline disclaimer per BCI guidelines */}
       <p className="mt-8 text-xs text-white/60">
         Informational note only. Not legal advice or solicitation. For case-specific guidance, please{" "}
         <a className="underline hover:text-white" href="/#contact">contact</a>.
       </p>
 
-      {/* Explore */}
       <section className="mt-10">
         <h2 className="text-2xl font-semibold">Explore</h2>
         <div className="mt-3 flex flex-wrap gap-3 text-sm">
