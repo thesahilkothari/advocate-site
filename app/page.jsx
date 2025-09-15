@@ -321,8 +321,6 @@ function CourtsWeAppear() {
     </section>
   );
 }
-  );
-}
 
 function WhyUs() {
   const items = [
@@ -406,7 +404,13 @@ function About() {
           <Card className="bg-white/5 border-white/10 rounded-2xl">
             <CardContent className="p-6">
               <h3 className="font-medium">Core Capabilities</h3>
-              <ul className="mt-3 list-disc list-inside text-sm text-white/80">$1</ul>
+              <ul className="mt-3 list-disc list-inside text-sm text-white/80">
+                <li>Case strategy, drafting, filings and arguments</li>
+                <li>Second Appeals (Bombay HC practical format), Writs, Revisions</li>
+                <li>Real estate transactions, development documentation, and municipal compliance</li>
+                <li>Trusts & Societies governance, BPT Act & Societies Registration Act</li>
+                <li>Family & criminal matters with BNSS/BNSA & Bharatiya Sakshya Adhiniyam alignment</li>
+              </ul>
               <div className="mt-4 flex flex-wrap gap-3 text-sm">
                 <a className="underline hover:text-white" href="/drafting-advisory">Drafting & Advisory</a>
                 <span className="text-white/40">•</span>
