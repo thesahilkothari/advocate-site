@@ -282,7 +282,9 @@ function PracticeAreas() {
                 <div className="w-9 h-9 rounded-xl bg-white/10 grid place-items-center">{p.icon}</div>
                 <div className="font-medium">{p.href ? <a className="underline hover:text-white" href={p.href}>{p.title}</a> : p.title}</div>
               </div>
-              <ul className="mt-3 text-sm text-white/80 list-disc list-inside">$1</ul>
+              <ul className="mt-3 text-sm text-white/80 list-disc list-inside">
+                {p.points.map((pt, j) => (<li key={j}>{pt}</li>))}
+              </ul>
               {p.href && (
                 <div className="mt-4">
                   <a href={p.href} className="text-sm underline hover:text-white inline-flex items-center">Learn more <ChevronRight className="w-4 h-4 ml-1" /></a>
@@ -305,7 +307,20 @@ function CourtsWeAppear() {
           <div key={i} className="rounded-2xl border border-white/10 p-4 bg-white/5 text-white/80">{c}</div>
         ))}
       </div>
+      <div className="mt-6 flex flex-wrap gap-3 text-sm">
+        <a className="underline hover:text-white" href="/civil-litigation">Civil Litigation</a>
+        <span className="text-white/40">•</span>
+        <a className="underline hover:text-white" href="/criminal-bail">Criminal & Bail</a>
+        <span className="text-white/40">•</span>
+        <a className="underline hover:text-white" href="/rera-real-estate">RERA & Real Estate</a>
+        <span className="text-white/40">•</span>
+        <a className="underline hover:text-white" href="/trusts-societies">Trusts & Societies</a>
+        <span className="text-white/40">•</span>
+        <a className="underline hover:text-white" href="/drafting-advisory">Drafting & Advisory</a>
+      </div>
     </section>
+  );
+}
   );
 }
 
@@ -391,13 +406,14 @@ function About() {
           <Card className="bg-white/5 border-white/10 rounded-2xl">
             <CardContent className="p-6">
               <h3 className="font-medium">Core Capabilities</h3>
-              <ul className="mt-3 list-disc list-inside text-sm text-white/80">
-                <li>Case strategy, drafting, filings and arguments</li>
-                <li>Second Appeals (Bombay HC practical format), Writs, Revisions</li>
-                <li>Real estate transactions, development documentation, and municipal compliance</li>
-                <li>Trusts & Societies governance, BPT Act & Societies Registration Act</li>
-                <li>Family & criminal matters with BNSS/BNSA & Bharatiya Sakshya Adhiniyam alignment</li>
-              </ul>
+              <ul className="mt-3 list-disc list-inside text-sm text-white/80">$1</ul>
+              <div className="mt-4 flex flex-wrap gap-3 text-sm">
+                <a className="underline hover:text-white" href="/drafting-advisory">Drafting & Advisory</a>
+                <span className="text-white/40">•</span>
+                <a className="underline hover:text-white" href="/civil-litigation">Civil Litigation</a>
+                <span className="text-white/40">•</span>
+                <a className="underline hover:text-white" href="/rera-real-estate">RERA & Real Estate</a>
+              </div>
             </CardContent>
           </Card>
         </div>
