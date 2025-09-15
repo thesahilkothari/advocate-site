@@ -817,4 +817,33 @@ function SchemaOrg() {
           "@type": "Question",
           "name": "Do you appear in the Bombay High Court?",
           "acceptedAnswer": {
-            "@type"
+            "@type": "Answer",
+            "text": "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I start a case or seek an opinion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices."
+          }
+        }
+      ]
+    });
+
+    // Inject JSON-LD scripts and clean up on unmount
+    const nodes = scripts.map((obj) => {
+      const el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.text = JSON.stringify(obj);
+      document.head.appendChild(el);
+      return el;
+    });
+
+    return () => {
+      nodes.forEach((n) => n.parentNode && n.parentNode.removeChild(n));
+    };
+  }, []);
+  return null;
+}
