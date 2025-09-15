@@ -39,12 +39,12 @@ const ADVOCATE = {
 };
 
 const PRACTICE_AREAS = [
-  { icon: <Gavel className="w-5 h-5" />, title: "Civil Litigation", points: ["Property & Tenancy", "Contracts & Recovery", "Injunctions"] },
-  { icon: <Scale className="w-5 h-5" />, title: "Criminal Matters", points: ["Bail & Anticipatory Bail", "Quashing & Revisions", "Trials"] },
-  { icon: <Building2 className="w-5 h-5" />, title: "Real Estate & Development", points: ["Development Agreements", "RERA/MAHARERA", "Municipal & MRTP"] },
-  { icon: <Landmark className="w-5 h-5" />, title: "Trusts & Societies", points: ["BPT Act Compliance", "Societies Act", "Governance & Disputes"] },
-  { icon: <Users className="w-5 h-5" />, title: "Family & Matrimonial", points: ["Divorce & Custody", "Maintenance", "Domestic Violence"] },
-  { icon: <FileText className="w-5 h-5" />, title: "Drafting & Advisory", points: ["Agreements & Notices", "Due Diligence", "Opinions"] },
+  { icon: <Gavel className="w-5 h-5" />, title: "Civil Litigation", href: "/civil-litigation", points: ["Property & Tenancy", "Contracts & Recovery", "Injunctions"] },
+  { icon: <Scale className="w-5 h-5" />, title: "Criminal Matters", href: "/criminal-bail", points: ["Bail & Anticipatory Bail", "Quashing & Revisions", "Trials"] },
+  { icon: <Building2 className="w-5 h-5" />, title: "Real Estate & Development", href: "/rera-real-estate", points: ["Development Agreements", "RERA/MAHARERA", "Municipal & MRTP"] },
+  { icon: <Landmark className="w-5 h-5" />, title: "Trusts & Societies", href: "/trusts-societies", points: ["BPT Act Compliance", "Societies Act", "Governance & Disputes"] },
+  { icon: <Users className="w-5 h-5" />, title: "Family & Matrimonial", href: "/family-law", points: ["Divorce & Custody", "Maintenance", "Domestic Violence"] },
+  { icon: <FileText className="w-5 h-5" />, title: "Drafting & Advisory", href: "/drafting-advisory", points: ["Agreements & Notices", "Due Diligence", "Opinions"] },
 ];
 
 const COURTS = [
@@ -280,11 +280,14 @@ function PracticeAreas() {
             <CardContent className="p-5">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-white/10 grid place-items-center">{p.icon}</div>
-                <div className="font-medium">{p.title}</div>
+                <div className="font-medium">{p.href ? <a className="underline hover:text-white" href={p.href}>{p.title}</a> : p.title}</div>
               </div>
-              <ul className="mt-3 text-sm text-white/80 list-disc list-inside">
-                {p.points.map((pt, j) => <li key={j}>{pt}</li>)}
-              </ul>
+              <ul className="mt-3 text-sm text-white/80 list-disc list-inside">$1</ul>
+              {p.href && (
+                <div className="mt-4">
+                  <a href={p.href} className="text-sm underline hover:text-white inline-flex items-center">Learn more <ChevronRight className="w-4 h-4 ml-1" /></a>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
