@@ -1,14 +1,21 @@
-// app/sitemap.js
 export default function sitemap() {
   const base = "https://www.kotharivakil.in";
-
-  // Only include real pages (no #anchors). Your site is a single page right now.
-  return [
-    {
-      url: `${base}/`,
-      lastModified: new Date().toISOString(), // ISO 8601 string
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
+  const routes = [
+    "/", // homepage
+    "/civil-litigation",
+    "/criminal-bail",
+    "/rera-real-estate",
+    "/trusts-societies",
+    "/family-law",
+    "/drafting-advisory",
+    "/baramati-lawyer",
+    "/pune-lawyer",
   ];
+  const lastModified = new Date().toISOString();
+  return routes.map((p) => ({
+    url: base + p,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: p === "/" ? 1.0 : 0.8,
+  }));
 }
