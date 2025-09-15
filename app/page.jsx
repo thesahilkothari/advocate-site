@@ -150,6 +150,7 @@ export default function Site() {
         <PracticeAreas />
         <CourtsWeAppear />
         <WhyUs />
+        <InsightsTeaser />
         <Testimonials />
         <About />
         <Internships />
@@ -232,6 +233,7 @@ function Header({ sticky }) {
           <a href="#practice" className="hover:text-white">Practice</a>
           <a href="#courts" className="hover:text-white">Courts</a>
           <a href="#about" className="hover:text-white">About</a>
+          <a href="/insights" className="hover:text-white">Insights</a>
           <a href="#internships" className="hover:text-white">Internships</a>
           <a href="#contact" className="hover:text-white">Contact</a>
         </div>
@@ -394,6 +396,43 @@ function WhyUs() {
           </div>
         ))}
       </div>
+    </section>
+  );
+}
+
+function InsightsTeaser() {
+  const posts = [
+    {
+      slug: "anticipatory-bail-bnss",
+      title: "Understanding Anticipatory Bail under BNSS (2023)",
+      desc: "A practical overview of anticipatory bail with process and documentation pointers.",
+      date: "2025-09-01",
+    },
+    {
+      slug: "maharera-document-checklist",
+      title: "MAHARERA: Document Checklist for Flat Purchasers & Developers",
+      desc: "Key documents to collect, verify and file before entering into agreements.",
+      date: "2025-09-08",
+    },
+  ];
+  return (
+    <section className="py-12">
+      <h2 className="text-2xl font-semibold">Insights</h2>
+      <div className="mt-6 grid md:grid-cols-2 gap-4">
+        {posts.map((p, i) => (
+          <Card key={i} className="bg-white/5 border-white/10 rounded-2xl hover:bg-white/10 transition">
+            <CardContent className="p-5">
+              <div className="text-xs text-white/50">{new Date(p.date).toLocaleDateString()}</div>
+              <a href={`/insights/${p.slug}`} className="block mt-1 text-lg font-medium underline hover:text-white">{p.title}</a>
+              <p className="mt-2 text-sm text-white/80">{p.desc}</p>
+              <div className="mt-3 text-sm">
+                <a href={`/insights/${p.slug}`} className="underline hover:text-white inline-flex items-center">Read more <ChevronRight className="w-4 h-4 ml-1" /></a>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-4 text-sm"><a className="underline hover:text-white" href="/insights">View all →</a></div>
     </section>
   );
 }
@@ -777,23 +816,4 @@ function SchemaOrg() {
         {
           "@type": "Question",
           name: "Do you appear in the Bombay High Court?",
-          acceptedAnswer: { "@type": "Answer", text: "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra." }
-        },
-        {
-          "@type": "Question",
-          name: "How can I schedule a consultation?",
-          acceptedAnswer: { "@type": "Answer", text: "Use the contact form or call the listed number to schedule an appointment. Video consultations are available by prior booking." }
-        }
-      ]
-    });
-
-    // Inject JSON-LD
-    scripts.forEach(obj => {
-      const s = document.createElement('script');
-      s.type = 'application/ld+json';
-      s.text = JSON.stringify(obj);
-      document.head.appendChild(s);
-    });
-  }, []);
-  return null;
-}
+          acceptedAnswer: { "@type": "Answer", text: 
