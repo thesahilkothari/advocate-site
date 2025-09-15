@@ -414,12 +414,6 @@ function InsightsTeaser() {
       desc: "Key documents to collect, verify and file before entering into agreements.",
       date: "2025-09-08",
     },
-    {
-  slug: "second-appeals-bombay-hc",
-  title: "Second Appeals in Bombay High Court: Maintainability & Drafting Pointers",
-  desc: "When second appeals are maintainable, pitfalls, timelines, and drafting notes.",
-  date: "2025-09-15",
-},
   ];
   return (
     <section className="py-12">
@@ -818,8 +812,9 @@ function SchemaOrg() {
     scripts.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: [
+      "mainEntity": [
         {
           "@type": "Question",
-          name: "Do you appear in the Bombay High Court?",
-          acceptedAnswer: { "@type": "Answer", text: 
+          "name": "Do you appear in the Bombay High Court?",
+          "acceptedAnswer": {
+            "@type"
