@@ -39,12 +39,48 @@ const ADVOCATE = {
 };
 
 const PRACTICE_AREAS = [
-  { icon: <Gavel className="w-5 h-5" />, title: "Civil Litigation", href: "/civil-litigation", points: ["Property & Tenancy", "Contracts & Recovery", "Injunctions"] },
-  { icon: <Scale className="w-5 h-5" />, title: "Criminal Matters", href: "/criminal-bail", points: ["Bail & Anticipatory Bail", "Quashing & Revisions", "Trials"] },
-  { icon: <Building2 className="w-5 h-5" />, title: "Real Estate & Development", href: "/rera-real-estate", points: ["Development Agreements", "RERA/MAHARERA", "Municipal & MRTP"] },
-  { icon: <Landmark className="w-5 h-5" />, title: "Trusts & Societies", href: "/trusts-societies", points: ["BPT Act Compliance", "Societies Act", "Governance & Disputes"] },
-  { icon: <Users className="w-5 h-5" />, title: "Family & Matrimonial", href: "/family-law", points: ["Divorce & Custody", "Maintenance", "Domestic Violence"] },
-  { icon: <FileText className="w-5 h-5" />, title: "Drafting & Advisory", href: "/drafting-advisory", points: ["Agreements & Notices", "Due Diligence", "Opinions"] },
+  {
+    icon: <Gavel className="w-5 h-5" />,
+    title: "Civil Litigation",
+    href: "/civil-litigation",
+    intro: "Property and commercial disputes, tenancy/possession, injunctions, contracts and recovery across Maharashtra courts and the Bombay High Court.",
+    points: ["Property & Tenancy", "Contracts & Recovery", "Injunctions"]
+  },
+  {
+    icon: <Scale className="w-5 h-5" />,
+    title: "Criminal Matters",
+    href: "/criminal-bail",
+    intro: "Anticipatory/regular bail, revisions and quashing with clear documentation and timelines aligned to BNSS/BNSA.",
+    points: ["Bail & Anticipatory Bail", "Quashing & Revisions", "Trials"]
+  },
+  {
+    icon: <Building2 className="w-5 h-5" />,
+    title: "Real Estate & Development",
+    href: "/rera-real-estate",
+    intro: "Development agreements, MAHARERA, municipal/MRTP compliance, and project due diligence.",
+    points: ["Development Agreements", "RERA/MAHARERA", "Municipal & MRTP"]
+  },
+  {
+    icon: <Landmark className="w-5 h-5" />,
+    title: "Trusts & Societies",
+    href: "/trusts-societies",
+    intro: "BPT Act and Societies Registration compliance, governance frameworks, and dispute resolution.",
+    points: ["BPT Act Compliance", "Societies Act", "Governance & Disputes"]
+  },
+  {
+    icon: <Users className="w-5 h-5" />,
+    title: "Family & Matrimonial",
+    href: "/family-law",
+    intro: "Divorce, custody/visitation, maintenance and domestic violence matters with documentation-first approach.",
+    points: ["Divorce & Custody", "Maintenance", "Domestic Violence"]
+  },
+  {
+    icon: <FileText className="w-5 h-5" />,
+    title: "Drafting & Advisory",
+    href: "/drafting-advisory",
+    intro: "Pleadings, agreements, notices, due diligence and practical legal opinions.",
+    points: ["Agreements & Notices", "Due Diligence", "Opinions"]
+  },
 ];
 
 const COURTS = [
@@ -282,6 +318,7 @@ function PracticeAreas() {
                 <div className="w-9 h-9 rounded-xl bg-white/10 grid place-items-center">{p.icon}</div>
                 <div className="font-medium">{p.href ? <a className="underline hover:text-white" href={p.href}>{p.title}</a> : p.title}</div>
               </div>
+              {p.intro && <p className="mt-2 text-white/70 text-sm">{p.intro}</p>}
               <ul className="mt-3 text-sm text-white/80 list-disc list-inside">
                 {p.points.map((pt, j) => (<li key={j}>{pt}</li>))}
               </ul>
