@@ -105,6 +105,7 @@ const SITE_LINKS = [
   { href: '/drafting-advisory', label: 'Drafting & Advisory' },
   { href: '/baramati-lawyer', label: 'Baramati Lawyer' },
   { href: '/pune-lawyer', label: 'Pune Lawyer' },
+  { href: '/internships', label: 'Internships' },
 ];
 
 const TESTIMONIALS = [
@@ -153,7 +154,7 @@ export default function Site() {
         <InsightsTeaser />
         <Testimonials />
         <About />
-        <Internships />
+        {/* Internships moved to dedicated page at /internships */}
         <GlobalFAQ />
         <LinksCloud />
         <Contact />
@@ -234,7 +235,7 @@ function Header({ sticky }) {
           <a href="#courts" className="hover:text-white">Courts</a>
           <a href="#about" className="hover:text-white">About</a>
           <a href="/insights" className="hover:text-white">Insights</a>
-          <a href="#internships" className="hover:text-white">Internships</a>
+          <a href="/internships" className="hover:text-white">Internships</a>
           <a href="#contact" className="hover:text-white">Contact</a>
         </div>
         <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="ml-4"><Button className="rounded-2xl">Call Now</Button></a>
@@ -770,7 +771,7 @@ function SchemaOrg() {
 
     const scripts = [];
 
-    // LegalService schema
+    // LegalService
     scripts.push({
       "@context": "https://schema.org",
       "@type": "LegalService",
@@ -786,11 +787,16 @@ function SchemaOrg() {
       telephone: ADVOCATE.phone,
       url,
       image: ADVOCATE.ogImage || undefined,
-      alternateName: ["Kothari Vakil","Advocate Sahil Kothari","Lawyer from Baramati","High Court Advocate"],
+      alternateName: [
+        "Kothari Vakil",
+        "Advocate Sahil Kothari",
+        "Lawyer from Baramati",
+        "High Court Advocate"
+      ],
       sameAs: [`https://wa.me/${ADVOCATE.whatsapp}`]
     });
 
-    // WebSite schema (basic)
+    // WebSite
     scripts.push({
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -799,7 +805,7 @@ function SchemaOrg() {
       publisher: { "@type": "Organization", name: ADVOCATE.name }
     });
 
-    // Breadcrumbs (simple)
+    // Breadcrumbs
     scripts.push({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -808,31 +814,24 @@ function SchemaOrg() {
       ]
     });
 
-    // FAQ (enhanced visibility in SERP)
+    // FAQ
     scripts.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [
+      mainEntity: [
         {
           "@type": "Question",
           "name": "Do you appear in the Bombay High Court?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra."
-          }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra." }
         },
         {
           "@type": "Question",
           "name": "How do I start a case or seek an opinion?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices."
-          }
+          "acceptedAnswer": { "@type": "Answer", "text": "Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices." }
         }
       ]
     });
 
-    // Inject JSON-LD scripts and clean up on unmount
     const nodes = scripts.map((obj) => {
       const el = document.createElement('script');
       el.type = 'application/ld+json';
@@ -841,9 +840,9 @@ function SchemaOrg() {
       return el;
     });
 
-    return () => {
-      nodes.forEach((n) => n.parentNode && n.parentNode.removeChild(n));
-    };
+    return () => { nodes.forEach((n) => n.parentNode && n.parentNode.removeChild(n)); };
   }, []);
   return null;
 }
+
+export { PRACTICE_AREAS, SITE_LINKS };
