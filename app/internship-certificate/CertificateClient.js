@@ -21,7 +21,7 @@ export default function CertificateClient() {
       mode: get(sp, "mode", "Remote"),
       hours: get(sp, "hours", "—"),
       issued: get(sp, "issued", today),
-      id: get(sp, "id", "KLC/INT/2025/001"),
+      id: get(sp, "id", "SSKLC/INT/2025/001"),
       mentor: get(sp, "mentor", "Adv. Sahil S. Kothari"),
       role: get(sp, "role", "Legal Intern"),
     };
