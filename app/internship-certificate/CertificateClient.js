@@ -51,7 +51,7 @@ export default function CertificateClient() {
       {/* Certificate */}
       <div className="bg-white text-black rounded-2xl p-8 md:p-12 shadow-2xl border border-black/10 print:shadow-none">
         <div className="text-center">
-          <div className="text-xs tracking-wider text-black/70">Kothari Law Chambers</div>
+          <div className="text-xs tracking-wider text-black/70">Adv. Sahil S Kothari Law Chambers</div>
           <h2 className="text-2xl md:text-3xl font-semibold mt-1">Certificate of Internship</h2>
           <div className="text-sm text-black/60 mt-1">Certificate ID: {data.id}</div>
         </div>
@@ -59,7 +59,7 @@ export default function CertificateClient() {
         <div className="mt-8 text-base leading-7">
           <p>
             This is to certify that <strong>{data.name}</strong> successfully completed an
-            internship as a <strong>{data.role}</strong> with Kothari Law Chambers in the{" "}
+            internship as a <strong>{data.role}</strong> with Adv. Sahil S Kothari Law Chambers in the{" "}
             <strong>{data.mode}</strong> mode from <strong>{data.from}</strong> to{" "}
             <strong>{data.to}</strong>.
           </p>
