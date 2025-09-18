@@ -3,7 +3,6 @@
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-// Helper to read a param with a default
 function get(sp, key, fallback = "") {
   const val = sp.get(key);
   return (val && val.trim()) || fallback;
@@ -21,15 +20,13 @@ export default function CertificateClient() {
       mode: get(sp, "mode", "Remote"),
       hours: get(sp, "hours", "—"),
       issued: get(sp, "issued", today),
-      id: get(sp, "id", "SSKLC/INT/2025/001"),
+      id: get(sp, "id", "KLC/INT/2025/001"),
       mentor: get(sp, "mentor", "Adv. Sahil S. Kothari"),
       role: get(sp, "role", "Legal Intern"),
     };
   }, [sp]);
 
-  const printPage = () => {
-    if (typeof window !== "undefined") window.print();
-  };
+  const printPage = () => typeof window !== "undefined" && window.print();
 
   return (
     <div className="mt-6 print:mt-0">
@@ -48,10 +45,9 @@ export default function CertificateClient() {
         </a>
       </div>
 
-      {/* Certificate */}
       <div className="bg-white text-black rounded-2xl p-8 md:p-12 shadow-2xl border border-black/10 print:shadow-none">
         <div className="text-center">
-          <div className="text-xs tracking-wider text-black/70">Adv. Sahil S Kothari Law Chambers</div>
+          <div className="text-xs tracking-wider text-black/70">Kothari Law Chambers</div>
           <h2 className="text-2xl md:text-3xl font-semibold mt-1">Certificate of Internship</h2>
           <div className="text-sm text-black/60 mt-1">Certificate ID: {data.id}</div>
         </div>
@@ -59,7 +55,7 @@ export default function CertificateClient() {
         <div className="mt-8 text-base leading-7">
           <p>
             This is to certify that <strong>{data.name}</strong> successfully completed an
-            internship as a <strong>{data.role}</strong> with Adv. Sahil S Kothari Law Chambers in the{" "}
+            internship as a <strong>{data.role}</strong> with Kothari Law Chambers in the{" "}
             <strong>{data.mode}</strong> mode from <strong>{data.from}</strong> to{" "}
             <strong>{data.to}</strong>.
           </p>
@@ -89,9 +85,7 @@ export default function CertificateClient() {
         </div>
 
         <div className="mt-10 text-xs text-black/60">
-          Note: This certificate is for acknowledgment of internship and does not serve as a
-          license or accreditation. It is issued by Kothari Law Chambers based on completion
-          of the internship period and assigned tasks.
+          Note: This certificate acknowledges internship completion and is not a license or accreditation.
         </div>
       </div>
     </div>
