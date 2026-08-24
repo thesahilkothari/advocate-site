@@ -103,6 +103,7 @@ const SITE_LINKS = [
   { href: '/trusts-societies', label: 'Trusts & Societies' },
   { href: '/family-law', label: 'Family & Matrimonial' },
   { href: '/drafting-advisory', label: 'Drafting & Advisory' },
+  { href: '/employment-health-check', label: 'Employer Health Check' },
   { href: '/baramati-lawyer', label: 'Baramati Lawyer' },
   { href: '/pune-lawyer', label: 'Pune Lawyer' },
   { href: '/internships', label: 'Internships' },
@@ -149,6 +150,7 @@ export default function Site() {
         <Hero />
         <USPStrip />
         <PracticeAreas />
+        <EmployerHealthCheck />
         <CourtsWeAppear />
         <WhyUs />
         <InsightsTeaser />
@@ -235,6 +237,7 @@ function Header({ sticky }) {
           <a href="#courts" className="hover:text-white">Courts</a>
           <a href="#about" className="hover:text-white">About</a>
           <a href="/insights" className="hover:text-white">Insights</a>
+          <a href="/employment-health-check" className="hover:text-white">Employer Check</a>
           <a href="/internships" className="hover:text-white">Internships</a>
           <a href="#contact" className="hover:text-white">Contact</a>
         </div>
@@ -348,6 +351,36 @@ function PracticeAreas() {
             </CardContent>
           </Card>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function EmployerHealthCheck() {
+  return (
+    <section className="py-8" aria-labelledby="employment-health-check-title">
+      <div className="overflow-hidden rounded-3xl border border-emerald-300/15 bg-gradient-to-br from-[#12352f] via-[#102923] to-[#0B0F14] p-7 md:p-10">
+        <div className="grid gap-8 md:grid-cols-[1.3fr_.7fr] md:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">For Maharashtra employers</p>
+            <h2 id="employment-health-check-title" className="mt-3 text-3xl font-semibold leading-tight md:text-4xl">Check the health of your employment and team systems.</h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70">Complete a structured preliminary assessment covering employment documents, statutory readiness, retention, performance management and continuity. Receive an immediate Green, Orange or Red readiness report with priority areas.</p>
+            <a href="/employment-health-check" className="mt-6 inline-flex items-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-[#0B0F14] transition hover:bg-emerald-50">Start the preliminary assessment <ChevronRight className="ml-1 h-4 w-4" /></a>
+          </div>
+          <div className="grid gap-3 text-sm">
+            {[
+              "Question-specific five-point scales",
+              "Maharashtra-focused screening",
+              "Immediate readiness report",
+              "No information saved by the assessment",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-white/80">
+                <CheckCircle className="h-5 w-5 shrink-0 text-emerald-300" /> {item}
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="mt-6 border-t border-white/10 pt-5 text-xs leading-5 text-white/50">This tool provides general preliminary information only. It is not a legal opinion, certification or substitute for advice based on the facts of a particular establishment.</p>
       </div>
     </section>
   );

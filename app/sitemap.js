@@ -11,6 +11,7 @@ export default function sitemap() {
     "/trusts-societies",
     "/family-law",
     "/drafting-advisory",
+    "/employment-health-check",
     "/baramati-lawyer",
     "/pune-lawyer",
     "/insights",
