@@ -17,6 +17,7 @@ export default function sitemap() {
     "/mediation/online",
     "/mediation/cross-border",
     "/employment-health-check",
+    "/about",
     "/baramati-lawyer",
     "/pune-lawyer",
     "/insights",

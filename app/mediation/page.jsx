@@ -3,9 +3,9 @@ import { ADVOCATE, PRIMARY_NAV, SITE_URL } from "../../lib/site";
 import { createPageMetadata } from "../../lib/site";
 
 export const metadata = createPageMetadata({
-  title: "Mediation Services in Maharashtra & Online | Kothari Vakil",
+  title: "Accredited Mediator in Maharashtra & Online | Kothari Vakil",
   description:
-    "Neutral mediation process information for commercial, property, family, online and cross-border disputes, including suitability, fees and appointment safeguards.",
+    "Accredited mediator offering structured neutral processes for commercial, property, family, online and cross-border disputes from Maharashtra.",
   path: "/mediation",
 });
 
@@ -81,13 +81,14 @@ export default function MediationPage() {
       <main id="main-content" className="mx-auto max-w-6xl px-4 py-12 md:py-16">
         <section className="grid gap-10 md:grid-cols-[1.15fr_.85fr] md:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/80">Neutral dispute-resolution process</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/80">Accredited mediator · Neutral dispute-resolution process</p>
             <h1 className="mt-3 text-4xl font-semibold leading-tight md:text-6xl">Mediation in Maharashtra, online and across borders.</h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-white/75">A structured process for participants who want to explore resolution without transferring decision-making to a court or tribunal. The mediator manages the process impartially; the participants decide whether and on what terms to settle.</p>
           </div>
           <aside className="rounded-2xl border border-amber-200/15 bg-amber-200/5 p-6 text-sm leading-7 text-white/70">
-            <h2 className="font-medium text-white">Role separation</h2>
-            <p className="mt-2">Mediator and advocate are different roles. In a neutral appointment, no participant receives individual legal advice from the mediator. Participants may take independent advice before, during or after sessions.</p>
+            <h2 className="font-medium text-white">Training and role separation</h2>
+            <p className="mt-2">{ADVOCATE.mediationCredential.programme} by {ADVOCATE.mediationCredential.institution}; {ADVOCATE.mediationCredential.qualityAssurance.toLowerCase()}; {ADVOCATE.mediationCredential.period}.</p>
+            <p className="mt-3">Mediator and advocate are different roles. In a neutral appointment, no participant receives individual legal advice from the mediator. Participants may take independent advice before, during or after sessions.</p>
           </aside>
         </section>
 

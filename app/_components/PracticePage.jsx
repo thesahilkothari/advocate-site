@@ -21,6 +21,25 @@ export default function PracticePage({ data }) {
     })),
   };
 
+  const breadcrumbItems = [
+    { name: "Home", item: SITE_URL },
+    ...(data.parent
+      ? [{ name: data.parent.label, item: `${SITE_URL}${data.parent.href}` }]
+      : []),
+    { name: data.shortTitle || data.title, item: `${SITE_URL}${data.path}` },
+  ];
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.item,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
       <header className="border-b border-white/10 bg-[#0B0F14]/95">
@@ -173,6 +192,7 @@ export default function PracticePage({ data }) {
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     </div>
   );
 }
