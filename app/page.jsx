@@ -1,8 +1,10 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { Calendar, Gavel, Scale, Phone, Mail, MapPin, ChevronRight, Shield, Users, MessageSquare, FileText, Building2, Landmark, CheckCircle, Star, Infinity } from "lucide-react";
+import Image from "next/image";
+import { Calendar, Gavel, Scale, Phone, Mail, MapPin, ChevronRight, Shield, Users, MessageSquare, FileText, Building2, Landmark, CheckCircle, Infinity, Handshake } from "lucide-react";
+import { ADVOCATE, FORM_ACTION, PRIMARY_NAV, SITE_URL } from "../lib/site";
+import { POSTS } from "../lib/insights";
 
-// NOTE: Using plain <img> tags instead of next/image to avoid sandbox/runtime issues.
 // Lightweight UI shims (remove if you later add shadcn/ui)
 const Button = ({ className = "", children, ...props }) => (
   <button className={`px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-md ${className}`} {...props}>{children}</button>
@@ -20,24 +22,6 @@ const CardContent = ({ className = "", children }) => (
   <div className={`p-4 ${className}`}>{children}</div>
 );
 
-// --- Config (edit these) ---
-// If using Formspree, set your form ID here (e.g., "f/abcdwxyz")
-const FORMSPREE_ID = "f/xblaejln";
-
-const ADVOCATE = {
-  name: "Adv. Sahil S. Kothari",
-  enrollment: "MAH/3210/2024",
-  phone: "+91 9673931166",
-  email: "thesahilkothari@gmail.com",
-  address: "Shop No. 14, Vardhaman Capital, Suryanagari, Baramati - 413133, Dist- Pune",
-  practice: "District & Sessions Courts, Tribunals across Maharashtra, and Bombay High Court",
-  whatsapp: "919673931166", // numeric international format without +
-  logo: "/logo-mark.svg", // place your logo in /public/logo-mark.svg
-  photo: "/ssk-photo.png", // place your portrait in /public/ssk-photo.png
-  domain: "https://www.kotharivakil.in",
-  ogImage: "/og.png" // optional: add a 1200x630 image at /public/og.png
-};
-
 const PRACTICE_AREAS = [
   {
     icon: <Gavel className="w-5 h-5" />,
@@ -50,7 +34,7 @@ const PRACTICE_AREAS = [
     icon: <Scale className="w-5 h-5" />,
     title: "Criminal Matters",
     href: "/criminal-bail",
-    intro: "Anticipatory/regular bail, revisions and quashing with clear documentation and timelines aligned to BNSS/BNSA.",
+    intro: "Anticipatory and regular bail, revisions, quashing and trial support under the BNS, BNSS and BSA framework.",
     points: ["Bail & Anticipatory Bail", "Quashing & Revisions", "Trials"]
   },
   {
@@ -64,8 +48,8 @@ const PRACTICE_AREAS = [
     icon: <Landmark className="w-5 h-5" />,
     title: "Trusts & Societies",
     href: "/trusts-societies",
-    intro: "BPT Act and Societies Registration compliance, governance frameworks, and dispute resolution.",
-    points: ["BPT Act Compliance", "Societies Act", "Governance & Disputes"]
+    intro: "Maharashtra Public Trusts Act and Societies Registration compliance, governance frameworks, and dispute resolution.",
+    points: ["Public Trusts Compliance", "Societies Act", "Governance & Disputes"]
   },
   {
     icon: <Users className="w-5 h-5" />,
@@ -80,6 +64,13 @@ const PRACTICE_AREAS = [
     href: "/drafting-advisory",
     intro: "Pleadings, agreements, notices, due diligence and practical legal opinions.",
     points: ["Agreements & Notices", "Due Diligence", "Opinions"]
+  },
+  {
+    icon: <Handshake className="w-5 h-5" />,
+    title: "Mediation",
+    href: "/mediation",
+    intro: "Structured, confidential dispute-resolution support for commercial, property, family, online and cross-border matters.",
+    points: ["Neutral process", "Online or in person", "Time-based fee options"]
   },
 ];
 
@@ -103,16 +94,11 @@ const SITE_LINKS = [
   { href: '/trusts-societies', label: 'Trusts & Societies' },
   { href: '/family-law', label: 'Family & Matrimonial' },
   { href: '/drafting-advisory', label: 'Drafting & Advisory' },
+  { href: '/mediation', label: 'Mediation' },
   { href: '/employment-health-check', label: 'Employer Health Check' },
   { href: '/baramati-lawyer', label: 'Baramati Lawyer' },
   { href: '/pune-lawyer', label: 'Pune Lawyer' },
   { href: '/internships', label: 'Internships' },
-];
-
-const TESTIMONIALS = [
-  { name: "Client from Pune", text: "Clear strategy, timely updates, and a professional approach. Highly recommended.", rating: 5 },
-  { name: "Entrepreneur, Baramati", text: "Drafted and negotiated our development documentation impeccably.", rating: 5 },
-  { name: "Litigant, Ahmednagar", text: "Transparent advice and strong courtroom representation.", rating: 5 },
 ];
 
 export default function Site() {
@@ -132,29 +118,20 @@ export default function Site() {
     setConsented(true);
   };
 
-  // simple runtime checks ("tests") to help validate asset paths in different envs
-  useEffect(() => {
-    const img = new window.Image();
-    img.onload = () => console.info("[check] portrait loaded:", ADVOCATE.photo);
-    img.onerror = () => console.warn("[check] portrait NOT found at:", ADVOCATE.photo);
-    img.src = ADVOCATE.photo + "?v=2"; // cache-bust
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
-      <HeadMeta />
       {!consented && <Disclaimer onAccept={handleConsent} />}
       <Header sticky={sticky} />
-      <main className="mx-auto max-w-6xl px-4">
+      <main id="main-content" className="mx-auto max-w-6xl px-4">
         <ThankYou />
         <Hero />
         <USPStrip />
         <PracticeAreas />
+        <MediationFocus />
         <EmployerHealthCheck />
         <CourtsWeAppear />
         <WhyUs />
         <InsightsTeaser />
-        <Testimonials />
         <About />
         {/* Internships moved to dedicated page at /internships */}
         <GlobalFAQ />
@@ -163,85 +140,25 @@ export default function Site() {
       </main>
       <Footer />
       <WhatsAppButton />
-      <SchemaOrg />
-      <CookieHint />
     </div>
   );
-}
-
-function HeadMeta() {
-  useEffect(() => {
-    const base = ADVOCATE.domain || (typeof window !== 'undefined' ? window.location.origin : '');
-    const currentUrl = typeof window !== 'undefined' ? (base + window.location.pathname) : base;
-
-    // Title
-    document.title = `Kothari Vakil | ${ADVOCATE.name} — ${ADVOCATE.practice}`;
-
-    // Helper to add/update tags uniquely
-    const upsert = (selector, tag, attrs) => {
-      let el = document.head.querySelector(selector);
-      if (!el) { el = document.createElement(tag); document.head.appendChild(el); }
-      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-    };
-
-    // Canonical & hreflang
-    upsert('link[rel="canonical"]', 'link', { rel: 'canonical', href: currentUrl });
-    upsert('link[rel="alternate"][hreflang="x-default"]', 'link', { rel: 'alternate', href: currentUrl, hreflang: 'x-default' });
-    upsert('link[rel="alternate"][hreflang="en-IN"]', 'link', { rel: 'alternate', href: currentUrl, hreflang: 'en-IN' });
-
-    // Basic meta
-    upsert('meta[name="viewport"]', 'meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' });
-    upsert('meta[name="robots"]', 'meta', { name: 'robots', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' });
-    upsert('meta[name="description"]', 'meta', { name: 'description', content: `${ADVOCATE.name} — ${ADVOCATE.practice}. Strategic litigation, precise drafting, and practical advice.` });
-    upsert('meta[name="theme-color"]', 'meta', { name: 'theme-color', content: '#0B0F14' });
-    upsert('meta[name="keywords"]', 'meta', { name: 'keywords', content: 'advocate, lawyer, vakil, lawyer from Baramati, Baramati advocate, high court advocate, Bombay High Court lawyer, Maharashtra lawyer, legal services, civil litigation, criminal law, real estate, RERA, trusts and societies, mediation, accredited mediator' });
-
-
-    // Open Graph
-    upsert('meta[property="og:site_name"]', 'meta', { property: 'og:site_name', content: 'Kothari Law Chambers' });
-    upsert('meta[property="og:title"]', 'meta', { property: 'og:title', content: `Kothari Vakil | ${ADVOCATE.name} — Law Chambers` });
-    upsert('meta[property="og:description"]', 'meta', { property: 'og:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
-    upsert('meta[property="og:type"]', 'meta', { property: 'og:type', content: 'website' });
-    upsert('meta[property="og:url"]', 'meta', { property: 'og:url', content: currentUrl });
-    if (ADVOCATE.ogImage) {
-      upsert('meta[property="og:image"]', 'meta', { property: 'og:image', content: ADVOCATE.ogImage });
-    }
-
-    // Twitter Card
-    upsert('meta[name="twitter:card"]', 'meta', { name: 'twitter:card', content: 'summary_large_image' });
-    upsert('meta[name="twitter:title"]', 'meta', { name: 'twitter:title', content: `Kothari Vakil | ${ADVOCATE.name} — Law Chambers` });
-    upsert('meta[name="twitter:description"]', 'meta', { name: 'twitter:description', content: `Advocate in Maharashtra & Bombay High Court. Call ${ADVOCATE.phone}.` });
-    if (ADVOCATE.ogImage) {
-      upsert('meta[name="twitter:image"]', 'meta', { name: 'twitter:image', content: ADVOCATE.ogImage });
-    }
-
-    // Favicons (assumes you will add these in /public)
-    upsert('link[rel="icon"]', 'link', { rel: 'icon', href: '/favicon.ico' });
-  }, []);
-  return null;
 }
 
 function Header({ sticky }) {
   return (
     <header className={`w-full top-0 z-40 transition-all ${sticky ? "sticky bg-[#0B0F14]/80 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={36} height={36} className="w-9 h-9 rounded-2xl object-cover border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
+        <a href="/" className="flex items-center gap-3">
+          <Image src={ADVOCATE.logo} alt="Kothari Vakil logo" width={36} height={36} className="w-9 h-9 rounded-2xl object-cover border border-white/10" />
           <div>
             <div className="font-semibold leading-tight">{ADVOCATE.name}</div>
             <div className="text-xs text-white/60">Enr. {ADVOCATE.enrollment}</div>
           </div>
-        </div>
-        <div className="hidden md:flex items-center gap-6 text-sm text-white/80">
-          <a href="#practice" className="hover:text-white">Practice</a>
-          <a href="#courts" className="hover:text-white">Courts</a>
-          <a href="#about" className="hover:text-white">About</a>
-          <a href="/insights" className="hover:text-white">Insights</a>
-          <a href="/employment-health-check" className="hover:text-white">Employer Check</a>
-          <a href="/internships" className="hover:text-white">Internships</a>
-          <a href="#contact" className="hover:text-white">Contact</a>
-        </div>
-        <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="ml-4"><Button className="rounded-2xl">Call Now</Button></a>
+        </a>
+        <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-6 text-sm text-white/80">
+          {PRIMARY_NAV.map((item) => <a key={item.href} href={item.href} className="hover:text-white">{item.label}</a>)}
+        </nav>
+        <a href={`tel:${ADVOCATE.phoneHref}`} className="ml-4 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-sm hover:bg-white/20">Call Now</a>
       </div>
     </header>
   );
@@ -252,12 +169,12 @@ function Hero() {
     <section className="pt-20 md:pt-28 pb-12">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Practical, precise and proactive legal counsel.</h1>
-          <p className="mt-4 text-white/80">Representing clients before District Courts, Tribunals across Maharashtra, and the Bombay High Court. Focused on clear strategy, meticulous drafting, and effective advocacy.</p>
+          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Legal counsel and mediation support in Maharashtra.</h1>
+          <p className="mt-4 text-white/80">Information on litigation, drafting, advisory and mediation work from Baramati, with appearances before District Courts, tribunals across Maharashtra and the Bombay High Court.</p>
           <p className="mt-2 text-white/70 text-sm">Also known locally as <strong>Kothari Vakil</strong> — English / Marathi (मराठी) / Hindi (हिन्दी).</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#contact"><Button className="rounded-2xl">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></Button></a>
-            <a href={`mailto:${ADVOCATE.email}`} className="inline-block"><Button className="rounded-2xl border-white/30">Email</Button></a>
+            <a href="#contact" className="inline-flex items-center rounded-2xl border border-white/10 bg-white/10 px-4 py-2 hover:bg-white/20">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></a>
+            <a href={`mailto:${ADVOCATE.email}`} className="inline-flex items-center rounded-2xl border border-white/30 bg-white/10 px-4 py-2 hover:bg-white/20">Email</a>
           </div>
           <div className="mt-6 flex items-center gap-5 text-white/70 text-sm">
             <div className="flex items-center gap-2"><Shield className="w-4 h-4" /> Ethical, confidential advice</div>
@@ -267,8 +184,8 @@ function Hero() {
         <div className="relative">
           <div className="mb-4 flex justify-center">
             <div className="relative">
-              <img src={`${ADVOCATE.photo}?v=2`} alt={`${ADVOCATE.name}`} width={448} height={448} className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" onError={(e)=>{e.currentTarget.style.display='none'}} />
-              <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={40} height={40} className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" onError={(e)=>{e.currentTarget.style.display='none'}} />
+              <Image src={ADVOCATE.photo} alt={ADVOCATE.name} width={448} height={448} priority sizes="(max-width: 768px) 192px, 224px" className="w-48 h-48 md:w-56 md:h-56 object-cover rounded-2xl border border-white/10 shadow-2xl bg-gradient-to-br from-white/10 to-white/0" />
+              <Image src={ADVOCATE.logo} alt="" width={40} height={40} className="absolute -bottom-3 -right-3 w-10 h-10 rounded-xl border border-white/10 bg-white/90 p-1" />
             </div>
           </div>
           <Card className="bg-white/5 border-white/10 rounded-3xl shadow-2xl">
@@ -280,13 +197,30 @@ function Hero() {
                 <MiniStat label="Consultation" value="By Appointment" />
               </div>
               <div className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-white/10 to-white/5">
-                <div className="text-white/70 text-xs">Quick Enquiry</div>
-                <div className="mt-2 grid gap-2">
-                  <Input placeholder="Your Name" className="bg-white/10 border-white/10" />
-                  <Input placeholder="Phone / Email" className="bg-white/10 border-white/10" />
-                  <Textarea placeholder="Brief about your matter (no confidential details here)" className="bg-white/10 border-white/10" rows={3} />
-                  <a href="#contact"><Button className="rounded-2xl w-full">Send Enquiry</Button></a>
-                </div>
+                <h2 className="text-white/70 text-xs">Quick Enquiry</h2>
+                <form method="POST" action={FORM_ACTION} className="mt-2 grid gap-2" aria-label="Quick consultation enquiry">
+                  <label className="sr-only" htmlFor="quick-name">Your name</label>
+                  <Input id="quick-name" required name="name" autoComplete="name" placeholder="Your Name" className="bg-white/10 border-white/10" />
+                  <label className="sr-only" htmlFor="quick-contact">Phone or email</label>
+                  <Input id="quick-contact" required name="contact" autoComplete="email" placeholder="Phone / Email" className="bg-white/10 border-white/10" />
+                  <label className="sr-only" htmlFor="quick-service">Type of assistance</label>
+                  <select id="quick-service" required name="service" defaultValue="" className="rounded-md border border-white/10 bg-white/10 px-3 py-2 text-white">
+                    <option value="" disabled className="text-black">Select assistance</option>
+                    <option value="legal-consultation" className="text-black">Legal consultation</option>
+                    <option value="mediation" className="text-black">Mediation</option>
+                    <option value="document-review" className="text-black">Document review / drafting</option>
+                  </select>
+                  <label className="sr-only" htmlFor="quick-message">Brief outline</label>
+                  <Textarea id="quick-message" required name="message" placeholder="Brief about your matter (no confidential details here)" className="bg-white/10 border-white/10" rows={3} />
+                  <label className="flex items-start gap-2 text-[11px] leading-4 text-white/60">
+                    <input required type="checkbox" name="privacy_consent" value="yes" className="mt-0.5" />
+                    <span>I agree to the <a href="/privacy" className="underline">privacy notice</a> and understand that no professional relationship is created by this enquiry.</span>
+                  </label>
+                  <input type="hidden" name="_subject" value="New quick website enquiry" />
+                  <input type="hidden" name="_format" value="plain" />
+                  <input type="hidden" name="_next" value={`${SITE_URL}/#thank-you`} />
+                  <Button type="submit" className="rounded-2xl w-full">Send Enquiry</Button>
+                </form>
               </div>
             </CardContent>
           </Card>
@@ -356,6 +290,41 @@ function PracticeAreas() {
   );
 }
 
+function MediationFocus() {
+  const pathways = [
+    { href: "/mediation/commercial-business", title: "Commercial & business", text: "Contracts, payments, partnerships, shareholder and vendor disputes." },
+    { href: "/mediation/property-real-estate", title: "Property & real estate", text: "Development, co-owner, possession, boundary and project disputes." },
+    { href: "/mediation/online", title: "Online mediation", text: "Structured sessions for participants in different cities, with pre-session technology checks." },
+    { href: "/mediation/cross-border", title: "Cross-border mediation", text: "Process planning across countries, time zones, languages and legal systems." },
+  ];
+
+  return (
+    <section className="py-8" aria-labelledby="mediation-focus-title">
+      <div className="rounded-3xl border border-amber-200/15 bg-gradient-to-br from-[#332615] via-[#201b14] to-[#0B0F14] p-7 md:p-10">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200/80">Focused dispute resolution</p>
+        <div className="mt-3 grid gap-8 md:grid-cols-[1fr_.8fr] md:items-end">
+          <div>
+            <h2 id="mediation-focus-title" className="text-3xl font-semibold leading-tight md:text-4xl">Mediation with a defined process, written terms and role clarity.</h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-white/70">Mediation is a neutral process. It is distinct from representing one side as an advocate. Appointment follows identity, conflict and independence checks, and all participants receive process and fee terms before substantive sessions begin.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm leading-7 text-white/70">
+            Fees may be structured by preparation time, session time and agreed administration. The basis, minimum booking period, cancellation terms and allocation between participants are confirmed in writing before appointment.
+          </div>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {pathways.map((pathway) => (
+            <a key={pathway.href} href={pathway.href} className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:bg-white/10">
+              <h3 className="font-medium">{pathway.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-white/65">{pathway.text}</p>
+            </a>
+          ))}
+        </div>
+        <a href="/mediation#mediation-enquiry" className="mt-7 inline-flex items-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#0B0F14] hover:bg-white/90">Check mediation suitability <ChevronRight className="ml-1 h-4 w-4" /></a>
+      </div>
+    </section>
+  );
+}
+
 function EmployerHealthCheck() {
   return (
     <section className="py-8" aria-labelledby="employment-health-check-title">
@@ -412,13 +381,13 @@ function CourtsWeAppear() {
 
 function WhyUs() {
   const items = [
-    { icon: <Gavel className="w-5 h-5" />, title: "Litigation-first mindset", desc: "Strategy tailored to facts, law, and forum." },
-    { icon: <FileText className="w-5 h-5" />, title: "Strong drafting", desc: "Clear pleadings, precise agreements, and persuasive submissions." },
-    { icon: <Shield className="w-5 h-5" />, title: "Integrity", desc: "Candid advice with confidentiality and client interest foremost." },
+    { icon: <Gavel className="w-5 h-5" />, title: "Forum and remedy assessment", desc: "Strategy begins with facts, limitation, jurisdiction and the relief actually available." },
+    { icon: <FileText className="w-5 h-5" />, title: "Documentation discipline", desc: "Chronologies, document sets and drafts are organised around the issues that require decision." },
+    { icon: <Shield className="w-5 h-5" />, title: "Candid scope and risk", desc: "Advice identifies material assumptions, procedural risk and the limits of any preliminary view." },
   ];
   return (
     <section className="py-12">
-      <h2 className="text-2xl font-semibold">Why Clients Choose Us</h2>
+      <h2 className="text-2xl font-semibold">Practice approach</h2>
       <div className="mt-6 grid md:grid-cols-3 gap-4">
         {items.map((it, i) => (
           <div key={i} className="rounded-2xl border border-white/10 p-5 bg-white/5">
@@ -435,20 +404,7 @@ function WhyUs() {
 }
 
 function InsightsTeaser() {
-  const posts = [
-    {
-      slug: "anticipatory-bail-bnss",
-      title: "Understanding Anticipatory Bail under BNSS (2023)",
-      desc: "A practical overview of anticipatory bail with process and documentation pointers.",
-      date: "2025-09-01",
-    },
-    {
-      slug: "maharera-document-checklist",
-      title: "MAHARERA: Document Checklist for Flat Purchasers & Developers",
-      desc: "Key documents to collect, verify and file before entering into agreements.",
-      date: "2025-09-08",
-    },
-  ];
+  const posts = [...POSTS].sort((a, b) => b.updated.localeCompare(a.updated)).slice(0, 2);
   return (
     <section className="py-12">
       <h2 className="text-2xl font-semibold">Insights</h2>
@@ -456,9 +412,9 @@ function InsightsTeaser() {
         {posts.map((p, i) => (
           <Card key={i} className="bg-white/5 border-white/10 rounded-2xl hover:bg-white/10 transition">
             <CardContent className="p-5">
-              <div className="text-xs text-white/50">{new Date(p.date).toLocaleDateString()}</div>
+              <div className="text-xs text-white/50">Reviewed {new Date(p.updated).toLocaleDateString("en-IN", { dateStyle: "medium" })}</div>
               <a href={`/insights/${p.slug}`} className="block mt-1 text-lg font-medium underline hover:text-white">{p.title}</a>
-              <p className="mt-2 text-sm text-white/80">{p.desc}</p>
+              <p className="mt-2 text-sm text-white/80">{p.description}</p>
               <div className="mt-3 text-sm">
                 <a href={`/insights/${p.slug}`} className="underline hover:text-white inline-flex items-center">Read more <ChevronRight className="w-4 h-4 ml-1" /></a>
               </div>
@@ -471,42 +427,13 @@ function InsightsTeaser() {
   );
 }
 
-function StarRow({ n }) {
-  return (
-    <div className="flex gap-1">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className={`w-4 h-4 ${i < n ? '' : 'opacity-30'}`} />
-      ))}
-    </div>
-  );
-}
-
-function Testimonials() {
-  return (
-    <section className="py-12">
-      <h2 className="text-2xl font-semibold">Client Feedback</h2>
-      <div className="mt-6 grid md:grid-cols-3 gap-4">
-        {TESTIMONIALS.map((t, i) => (
-          <Card key={i} className="bg-white/5 border-white/10 rounded-2xl">
-            <CardContent className="p-5">
-              <StarRow n={t.rating} />
-              <p className="mt-3 text-white/90 text-sm">“{t.text}”</p>
-              <div className="mt-4 text-xs text-white/60">— {t.name}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <p className="text-xs text-white/50 mt-3">Disclaimer: Testimonials do not constitute a guarantee of specific outcomes.</p>
-    </section>
-  );
-}
-
 function GlobalFAQ() {
   const faqs = [
     { q: 'Do you appear in the Bombay High Court?', a: 'Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra.' },
     { q: 'How do I start a case or seek an opinion?', a: 'Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices.' },
     { q: 'Do you handle property/RERA documentation?', a: 'Yes. We assist with development agreements, MAHARERA complaints/compliance, municipal/MRTP and due diligence.' },
     { q: 'Are video consultations available?', a: 'Yes—by prior appointment. Use the form or call to schedule.' },
+    { q: 'Can I enquire about mediation?', a: 'Yes. Use the mediation suitability form for a preliminary process assessment. A mediator appointment is separate from advocate-client representation and requires identity, conflict and independence checks.' },
   ];
   return (
     <section className="py-12">
@@ -550,7 +477,7 @@ function About() {
           <p className="mt-4 text-white/80 text-sm leading-relaxed">
   {ADVOCATE.name} (Enrl. {ADVOCATE.enrollment}) practices across Maharashtra with appearances before
   District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
-  robust drafting—focusing on litigation strategy, precise pleadings, and pragmatic, results-oriented advice.
+  robust drafting—focusing on litigation strategy, precise pleadings, and practical, risk-aware advice.
   As an advocate/lawyer (vakil) based in Baramati and appearing before the Bombay High Court, I assist clients
   across Maharashtra in civil, criminal, real estate/RERA, and trust & society matters.
 </p>
@@ -572,8 +499,9 @@ function About() {
                 <li>Case strategy, drafting, filings and arguments</li>
                 <li>Second Appeals (Bombay HC practical format), Writs, Revisions</li>
                 <li>Real estate transactions, development documentation, and municipal compliance</li>
-                <li>Trusts & Societies governance, BPT Act & Societies Registration Act</li>
-                <li>Family & criminal matters with BNSS/BNSA & Bharatiya Sakshya Adhiniyam alignment</li>
+                <li>Trusts & Societies governance under the Maharashtra Public Trusts Act and Societies Registration Act</li>
+                <li>Family & criminal matters with BNS, BNSS and Bharatiya Sakshya Adhiniyam alignment</li>
+                <li>Neutral mediation process design for suitable disputes</li>
               </ul>
               <div className="mt-4 flex flex-wrap gap-3 text-sm">
                 <a className="underline hover:text-white" href="/drafting-advisory">Drafting & Advisory</a>
@@ -590,56 +518,6 @@ function About() {
   );
 }
 
-function Internships() {
-  return (
-    <section id="internships" className="py-12">
-      <h2 className="text-2xl font-semibold">Internships</h2>
-      <div className="mt-4 grid md:grid-cols-2 gap-8 items-start">
-        <div>
-          <p className="text-white/80 text-sm leading-relaxed">
-            Opportunities for <strong>law undergraduates</strong> and <strong>law graduates</strong> to intern in one of three modes:
-            <span className="block mt-2">• Remote (research & drafting)</span>
-            <span className="block">• Online (hybrid calls + document work)</span>
-            <span className="block">• Office (Baramati, in-person)</span>
-          </p>
-          <ul className="mt-4 text-white/80 text-sm list-disc list-inside">
-            <li>Areas: civil & criminal procedure, drafting, property/real estate (RERA), trusts & societies, writs/appeals.</li>
-            <li>Eligibility: enrolled in LL.B. or LL.M. (any year) or recent LL.B. graduate or LL.M. postgraduate.</li>
-            <li>Duration: 3–8 weeks (flexible based on mode and availability).</li>
-          </ul>
-          <p className="mt-4 text-xs text-white/60">Note: This section is informational and does not constitute solicitation. Selection is at sole discretion based on merit and availability.</p>
-        </div>
-        <Card className="bg-white/5 border-white/10 rounded-2xl">
-          <CardContent className="p-6">
-            <h3 className="font-medium">Apply for Internship</h3>
-            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/f/xblaejln`}>
-              <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
-              <Input required type="email" name="email" placeholder="Email" className="bg-white/10 border-white/10" />
-              <Input name="phone" placeholder="Phone" className="bg-white/10 border-white/10" />
-              <input type="hidden" name="_subject" value="Internship Application" />
-              <div>
-                <label className="block text-xs text-white/60 mb-1">Mode</label>
-                <select name="mode" className="w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white">
-                  <option value="Remote">Remote</option>
-                  <option value="Online">Online</option>
-                  <option value="Office (Baramati)">Office (Baramati)</option>
-                </select>
-              </div>
-              <Input name="institution" placeholder="Law School / University" className="bg-white/10 border-white/10" />
-              <Input name="year" placeholder="Current Year or Graduate" className="bg-white/10 border-white/10" />
-              <Input name="window" placeholder="Preferred Dates (e.g., Oct–Nov 2025)" className="bg-white/10 border-white/10" />
-              <Textarea required name="statement" rows={4} placeholder="Brief Statement of Interest" className="bg-white/10 border-white/10" />
-              <input type="hidden" name="_format" value="plain" />
-              <input type="hidden" name="_next" value={`${ADVOCATE.domain}/#thank-you`} />
-              <Button type="submit" className="rounded-2xl">Submit Application</Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  );
-}
-
 function Contact() {
   return (
 
@@ -649,8 +527,8 @@ function Contact() {
         <Card className="bg-white/5 border-white/10 rounded-2xl">
           <CardContent className="p-6">
             <h3 className="font-medium">Send a Message</h3>
-            <p className="text-sm text-white/70 mt-1">This form sends via Formspree to your inbox.</p>
-            <form className="mt-4 grid gap-3" method="POST" action={`https://formspree.io/${FORMSPREE_ID}`}>
+            <p className="text-sm text-white/70 mt-1">Share only a short, non-confidential outline. A response or enquiry does not by itself create a professional relationship.</p>
+            <form className="mt-4 grid gap-3" method="POST" action={FORM_ACTION}>
               {/* Honeypot field to reduce spam */}
               <div className="hidden" aria-hidden="true">
                 <label>
@@ -659,16 +537,40 @@ function Contact() {
                 </label>
               </div>
 
-              {/* Real fields */}
-              <Input required name="name" placeholder="Full Name" className="bg-white/10 border-white/10" />
-              <Input required type="email" name="email" placeholder="Email" className="bg-white/10 border-white/10" />
-              <Input name="phone" placeholder="Phone (optional)" className="bg-white/10 border-white/10" />
-              <Textarea required name="message" rows={4} placeholder="Briefly describe your matter (avoid confidential info)" className="bg-white/10 border-white/10" />
+              <label className="text-sm text-white/75">Full name
+                <Input required name="name" autoComplete="name" className="mt-2 w-full bg-white/10 border-white/10" />
+              </label>
+              <label className="text-sm text-white/75">Email
+                <Input required type="email" name="email" autoComplete="email" className="mt-2 w-full bg-white/10 border-white/10" />
+              </label>
+              <label className="text-sm text-white/75">Phone (optional)
+                <Input name="phone" type="tel" autoComplete="tel" className="mt-2 w-full bg-white/10 border-white/10" />
+              </label>
+              <label className="text-sm text-white/75">Type of assistance
+                <select required name="service" defaultValue="" className="mt-2 w-full rounded-md border border-white/10 bg-white/10 px-3 py-2 text-white">
+                  <option value="" disabled className="text-black">Select one</option>
+                  <option value="civil" className="text-black">Civil litigation</option>
+                  <option value="criminal" className="text-black">Criminal matter / bail</option>
+                  <option value="property" className="text-black">Property / MAHARERA</option>
+                  <option value="family" className="text-black">Family / matrimonial</option>
+                  <option value="trust" className="text-black">Trust / society</option>
+                  <option value="drafting" className="text-black">Drafting / advisory</option>
+                  <option value="mediation" className="text-black">Mediation</option>
+                  <option value="other" className="text-black">Other</option>
+                </select>
+              </label>
+              <label className="text-sm text-white/75">Short, non-confidential outline
+                <Textarea required name="message" rows={4} className="mt-2 w-full bg-white/10 border-white/10" placeholder="Current stage, city or forum, and next known deadline" />
+              </label>
+              <label className="flex items-start gap-3 text-xs leading-5 text-white/65">
+                <input required type="checkbox" name="privacy_consent" value="yes" className="mt-1" />
+                <span>I have read the <a href="/privacy" className="underline hover:text-white">privacy notice</a> and understand the limits of an initial enquiry.</span>
+              </label>
 
               {/* Optional metadata */}
               <input type="hidden" name="_subject" value="New website enquiry" />
               <input type="hidden" name="_format" value="plain" />
-              <input type="hidden" name="_next" value={`${ADVOCATE.domain}/#thank-you`} />
+              <input type="hidden" name="_next" value={`${SITE_URL}/#thank-you`} />
 
               <Button type="submit" className="rounded-2xl">Submit</Button>
             </form>
@@ -690,6 +592,7 @@ function Contact() {
             <CardContent className="p-5 text-xs text-white/60 leading-relaxed">
               <div className="text-white">Professional Notice</div>
               <p className="mt-2">As per Bar Council of India rules, this website provides general information and does not solicit work or advertise. Visiting or contacting does not create a lawyer–client relationship. No guarantees of outcomes are made.</p>
+              <p className="mt-2"><a href="/professional-notice" className="underline hover:text-white">Read the full professional notice</a></p>
             </CardContent>
           </Card>
         </div>
@@ -704,15 +607,18 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-white/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-white">
-            <img src={`${ADVOCATE.logo}?v=2`} alt="Logo" width={20} height={20} className="w-5 h-5 rounded-md border border-white/10" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            <Image src={ADVOCATE.logo} alt="" width={20} height={20} className="w-5 h-5 rounded-md border border-white/10" />
             <span>{ADVOCATE.name}</span>
           </div>
           <div>Enrl. {ADVOCATE.enrollment} • {ADVOCATE.practice}</div>
         </div>
-        <div className="flex gap-4 items-center">
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-4 items-center">
+          <a href="/mediation" className="hover:underline">Mediation</a>
+          <a href="/privacy" className="hover:underline">Privacy</a>
+          <a href="/professional-notice" className="hover:underline">Professional Notice</a>
           <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="hover:underline flex items-center gap-1"><Phone className="w-4 h-4" /> Call</a>
           <a href={`mailto:${ADVOCATE.email}`} className="hover:underline flex items-center gap-1"><Mail className="w-4 h-4" /> Email</a>
-        </div>
+        </nav>
       </div>
     </footer>
   );
@@ -730,29 +636,12 @@ function WhatsAppButton() {
   );
 }
 
-function CookieHint() {
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const s = localStorage.getItem("cookie_hint_seen");
-    setSeen(!!s);
-  }, []);
-  if (seen) return null;
-  return (
-    <div className="fixed bottom-0 inset-x-0 z-50">
-      <div className="mx-auto max-w-6xl m-3 rounded-2xl bg-white/10 backdrop-blur border border-white/10 p-4 flex items-center justify-between">
-        <div className="text-xs text-white/80">We use basic cookies for site functionality. <span className="text-white/60">No tracking without consent.</span></div>
-        <Button className="rounded-xl" onClick={() => { localStorage.setItem("cookie_hint_seen", "yes"); setSeen(true); }}>OK</Button>
-      </div>
-    </div>
-  );
-}
-
 function Disclaimer({ onAccept }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur grid place-items-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="disclaimer-title" className="fixed inset-0 z-50 bg-black/70 backdrop-blur grid place-items-center p-4">
       <Card className="max-w-xl w-full rounded-3xl bg-[#0B0F14] border-white/10">
         <CardContent className="p-6 text-sm">
-          <h3 className="text-lg font-semibold">Disclaimer (Bar Council of India)</h3>
+          <h2 id="disclaimer-title" className="text-lg font-semibold">Disclaimer (Bar Council of India)</h2>
           <p className="mt-3 text-white/80">By clicking “I Agree”, you acknowledge that you wish to access this website to obtain information at your own volition and there has been no solicitation, advertisement, or inducement by the advocate or the chambers.</p>
           <ul className="list-disc list-inside text-white/70 mt-3">
             <li>This site is for general information only and does not constitute legal advice.</li>
@@ -761,9 +650,7 @@ function Disclaimer({ onAccept }) {
           </ul>
           <div className="mt-5 flex gap-3">
             <Button onClick={onAccept} className="rounded-2xl">I Agree</Button>
-            <a href="https://www.barcouncilofindia.org" target="_blank" rel="noreferrer">
-              <Button className="rounded-2xl border-white/30">Learn More</Button>
-            </a>
+            <a href="https://www.barcouncilofindia.org/info/bci-rules" target="_blank" rel="noreferrer" className="rounded-2xl border border-white/30 bg-white/10 px-4 py-2 hover:bg-white/20">Learn More</a>
           </div>
         </CardContent>
       </Card>
@@ -786,7 +673,7 @@ function ThankYou() {
   }, []);
   if (!show) return null;
   return (
-    <div className="my-4 rounded-2xl border border-green-400/30 bg-green-500/10 p-4 text-sm text-green-200 flex items-start gap-3">
+    <div aria-live="polite" className="my-4 rounded-2xl border border-green-400/30 bg-green-500/10 p-4 text-sm text-green-200 flex items-start gap-3">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mt-0.5"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.06-1.06L10.5 12.44 9.03 10.97a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.58-4.62Z" clipRule="evenodd"/></svg>
       <div className="flex-1">
         <div className="font-medium text-green-200">Thank you! Your submission has been received.</div>
@@ -795,87 +682,6 @@ function ThankYou() {
       <button onClick={() => setShow(false)} className="ml-2 px-2 py-1 text-green-100/80 hover:text-white">Dismiss</button>
     </div>
   );
-}
-
-function SchemaOrg() {
-  useEffect(() => {
-    const base = ADVOCATE.domain || (typeof window !== 'undefined' ? window.location.origin : '');
-    const url = typeof window !== 'undefined' ? (base + window.location.pathname) : base;
-
-    const scripts = [];
-
-    // LegalService
-    scripts.push({
-      "@context": "https://schema.org",
-      "@type": "LegalService",
-      name: ADVOCATE.name,
-      areaServed: "Maharashtra, India",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: ADVOCATE.address,
-        addressRegion: "Maharashtra",
-        addressCountry: "IN"
-      },
-      email: ADVOCATE.email,
-      telephone: ADVOCATE.phone,
-      url,
-      image: ADVOCATE.ogImage || undefined,
-      alternateName: [
-        "Kothari Vakil",
-        "Advocate Sahil Kothari",
-        "Lawyer from Baramati",
-        "High Court Advocate"
-      ],
-      sameAs: [`https://wa.me/${ADVOCATE.whatsapp}`]
-    });
-
-    // WebSite
-    scripts.push({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: "Kothari Law Chambers",
-      url: base,
-      publisher: { "@type": "Organization", name: ADVOCATE.name }
-    });
-
-    // Breadcrumbs
-    scripts.push({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: base }
-      ]
-    });
-
-    // FAQ
-    scripts.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          "name": "Do you appear in the Bombay High Court?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Appearances include matters before the Bombay High Court along with District & Sessions Courts and Tribunals across Maharashtra." }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I start a case or seek an opinion?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Share facts and documents in the consultation; we assess limitation, jurisdiction, strategy and draft the required pleadings or notices." }
-        }
-      ]
-    });
-
-    const nodes = scripts.map((obj) => {
-      const el = document.createElement('script');
-      el.type = 'application/ld+json';
-      el.text = JSON.stringify(obj);
-      document.head.appendChild(el);
-      return el;
-    });
-
-    return () => { nodes.forEach((n) => n.parentNode && n.parentNode.removeChild(n)); };
-  }, []);
-  return null;
 }
 
 export { PRACTICE_AREAS, SITE_LINKS };

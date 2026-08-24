@@ -1,12 +1,15 @@
-export const metadata = {
-  title: "Internships | Kothari Law Chambers",
+import { FORM_ACTION, SITE_URL, createPageMetadata } from "../../lib/site";
+
+export const metadata = createPageMetadata({
+  title: "Legal Internships | Adv. Sahil S. Kothari",
   description:
-    "Apply for remote, online, or office internships with Kothari Law Chambers. Open to law undergraduates and graduates.",
-};
+    "Information and application form for remote, online or Baramati office legal internships with Adv. Sahil S. Kothari.",
+  path: "/internships",
+});
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-[#0B0F14] text-white">
+    <main id="main-content" className="min-h-screen bg-[#0B0F14] text-white">
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-semibold">Internships</h1>
         <p className="mt-3 text-white/80 text-sm leading-relaxed">
@@ -39,70 +42,39 @@ export default function Page() {
               <a className="underline hover:text-white" href="/family-law">Family &amp; Matrimonial</a>
               <a className="underline hover:text-white" href="/drafting-advisory">Drafting &amp; Advisory</a>
               <a className="underline hover:text-white" href="/insights">Insights</a>
+              <a className="underline hover:text-white" href="/mediation">Mediation</a>
             </nav>
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="font-medium text-lg">Apply for Internship</h2>
-            <form className="mt-4 grid gap-3" method="POST" action="https://formspree.io/f/xblaejln">
-              <input
-                required
-                name="name"
-                placeholder="Full Name"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
-              <input
-                required
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
-              <input
-                name="phone"
-                placeholder="Phone"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
+            <form className="mt-4 grid gap-3" method="POST" action={FORM_ACTION}>
+              <label className="text-xs text-white/70">Full name<input required name="name" autoComplete="name" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
+              <label className="text-xs text-white/70">Email<input required type="email" name="email" autoComplete="email" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
+              <label className="text-xs text-white/70">Phone<input name="phone" type="tel" autoComplete="tel" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
 
-              <div>
-                <label className="block text-xs text-white/60 mb-1">Mode</label>
+              <label className="block text-xs text-white/60">
+                Mode
                 <select
                   name="mode"
-                  className="w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white"
+                  className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white"
                 >
-                  <option value="Remote">Remote</option>
-                  <option value="Online">Online</option>
-                  <option value="Office (Baramati)">Office (Baramati)</option>
+                  <option value="Remote" className="text-black">Remote</option>
+                  <option value="Online" className="text-black">Online</option>
+                  <option value="Office (Baramati)" className="text-black">Office (Baramati)</option>
                 </select>
-              </div>
+              </label>
 
-              <input
-                name="institution"
-                placeholder="Law School / University"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
-              <input
-                name="year"
-                placeholder="Current Year or Graduate"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
-              <input
-                name="window"
-                placeholder="Preferred Dates (e.g., Oct–Nov 2025)"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
-              <textarea
-                required
-                name="statement"
-                rows={4}
-                placeholder="Brief Statement of Interest"
-                className="px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60"
-              />
+              <label className="text-xs text-white/70">Law school / university<input name="institution" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
+              <label className="text-xs text-white/70">Current year or graduate<input name="year" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
+              <label className="text-xs text-white/70">Preferred dates<input name="window" placeholder="For example: 4 weeks from 1 October" className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white placeholder-white/60" /></label>
+              <label className="text-xs text-white/70">Brief statement of interest<textarea required name="statement" rows={4} className="mt-1 w-full px-3 py-2 rounded-md bg-white/10 border border-white/10 text-white" /></label>
+              <label className="flex items-start gap-3 text-xs leading-5 text-white/65"><input required type="checkbox" name="privacy_consent" value="yes" className="mt-1" /><span>I have read the <a href="/privacy" className="underline">privacy notice</a> and consent to use of this information for the internship application.</span></label>
 
               {/* Optional metadata */}
               <input type="hidden" name="_subject" value="Internship Application" />
               <input type="hidden" name="_format" value="plain" />
-              <input type="hidden" name="_next" value="/#thank-you" />
+              <input type="hidden" name="_next" value={`${SITE_URL}/#thank-you`} />
 
               <button
                 type="submit"

@@ -2,6 +2,10 @@
 import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Internship Certificate Verification",
+  robots: { index: false, follow: false, nocache: true },
+};
 
 function toUtf8(str) {
   return Buffer.from(str, "base64").toString("utf8");
@@ -50,7 +54,7 @@ export default function Page({ searchParams }) {
 
   if (!result.ok) {
     return (
-      <main className="min-h-screen bg-[#0B0F14] text-white">
+      <main id="main-content" className="min-h-screen bg-[#0B0F14] text-white">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h1 className="text-2xl md:text-3xl font-semibold">Certificate link invalid</h1>
           <p className="mt-3 text-white/70">
@@ -66,7 +70,7 @@ export default function Page({ searchParams }) {
   const d = result.payload;
 
   return (
-    <main className="min-h-screen bg-[#0B0F14] text-white">
+    <main id="main-content" className="min-h-screen bg-[#0B0F14] text-white">
       <div className="mx-auto max-w-5xl px-4 py-10">
         <div className="print:hidden">
           <h1 className="text-2xl md:text-3xl font-semibold">Internship Certificate</h1>
@@ -82,7 +86,7 @@ export default function Page({ searchParams }) {
         {/* Certificate */}
         <div className="mt-6 bg-white text-black rounded-2xl p-8 md:p-12 shadow-2xl border border-black/10 print:shadow-none">
           <div className="text-center">
-            <div className="text-xs tracking-wider text-black/70">Kothari Law Chambers</div>
+            <div className="text-xs tracking-wider text-black/70">Office of Adv. Sahil S. Kothari</div>
             <h2 className="text-2xl md:text-3xl font-semibold mt-1">Certificate of Internship</h2>
             <div className="text-sm text-black/60 mt-1">Certificate ID: {d.id}</div>
           </div>
@@ -90,7 +94,7 @@ export default function Page({ searchParams }) {
           <div className="mt-8 text-base leading-7">
             <p>
               This is to certify that <strong>{d.name}</strong> successfully completed an
-              internship as a <strong>{d.role}</strong> with Kothari Law Chambers in the{" "}
+              internship as a <strong>{d.role}</strong> with the office of Adv. Sahil S. Kothari in the{" "}
               <strong>{d.mode}</strong> mode from <strong>{d.from}</strong> to{" "}
               <strong>{d.to}</strong>.
             </p>

@@ -11,17 +11,25 @@ export default function sitemap() {
     "/trusts-societies",
     "/family-law",
     "/drafting-advisory",
+    "/mediation",
+    "/mediation/commercial-business",
+    "/mediation/property-real-estate",
+    "/mediation/online",
+    "/mediation/cross-border",
     "/employment-health-check",
     "/baramati-lawyer",
     "/pune-lawyer",
     "/insights",
+    "/internships",
+    "/privacy",
+    "/professional-notice",
     ...POSTS.map((p) => `/insights/${p.slug}`),
   ];
-  const lastModified = new Date().toISOString();
+  const lastModified = "2026-08-24T00:00:00.000Z";
   return routes.map((p) => ({
     url: base + p,
     lastModified,
-    changeFrequency: "weekly",
-    priority: p === "/" ? 1.0 : 0.7,
+    changeFrequency: "monthly",
+    priority: p === "/" ? 1.0 : p === "/mediation" ? 0.9 : 0.7,
   }));
 }
