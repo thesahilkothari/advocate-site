@@ -1,16 +1,18 @@
 // app/insights/page.jsx
 import { POSTS } from "../../lib/insights";
+import { createPageMetadata } from "../../lib/site";
 
-export const metadata = {
-  title: "Insights | Kothari Vakil",
-  description: "Informational legal notes and checklists. Not solicitation or legal advice.",
-};
+export const metadata = createPageMetadata({
+  title: "Legal Insights & Practical Checklists | Kothari Vakil",
+  description: "Source-linked legal information and practical document checklists for Maharashtra. General information only.",
+  path: "/insights",
+});
 
 export default function Page() {
   const sorted = [...POSTS].sort((a, b) => b.date.localeCompare(a.date));
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 text-white">
-      <h1 className="text-3xl font-semibold">Insights</h1>
+    <main id="main-content" className="mx-auto max-w-4xl px-4 py-12 text-white">
+      <h1 className="text-4xl font-semibold">Legal insights and practical checklists</h1>
       <p className="mt-3 text-white/80 text-sm">
         Informational notes only. Not legal advice or solicitation. For case-specific guidance, please{" "}
         <a className="underline hover:text-white" href="/#contact">contact</a>.
@@ -19,7 +21,7 @@ export default function Page() {
       <div className="mt-8 grid gap-4">
         {sorted.map((p) => (
           <article key={p.slug} className="rounded-2xl border border-white/10 p-5 bg-white/5">
-            <div className="text-xs text-white/50">{new Date(p.date).toLocaleDateString()}</div>
+            <div className="text-xs text-white/50">Reviewed {new Date(p.updated || p.date).toLocaleDateString("en-IN", { dateStyle: "medium" })}</div>
             <a className="block mt-1 text-lg font-medium underline hover:text-white" href={`/insights/${p.slug}`}>
               {p.title}
             </a>
@@ -41,6 +43,7 @@ export default function Page() {
           <a className="underline hover:text-white" href="/trusts-societies">Trusts &amp; Societies</a>
           <a className="underline hover:text-white" href="/family-law">Family &amp; Matrimonial</a>
           <a className="underline hover:text-white" href="/drafting-advisory">Drafting &amp; Advisory</a>
+          <a className="underline hover:text-white" href="/mediation">Mediation</a>
           <a className="underline hover:text-white" href="/baramati-lawyer">Baramati Lawyer</a>
           <a className="underline hover:text-white" href="/pune-lawyer">Pune Lawyer</a>
         </div>

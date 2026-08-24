@@ -149,7 +149,7 @@ export default function EmploymentHealthCheckClient() {
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:py-10">
+      <main id="main-content" className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:py-10">
         <aside className="h-fit rounded-3xl border border-emerald-300/15 bg-gradient-to-br from-emerald-950 to-[#102b27] p-7 lg:sticky lg:top-6">
           <p className="text-[11px] font-bold uppercase tracking-[.18em] text-emerald-300">Maharashtra Employment Health Check</p>
           <h1 className="mt-3 text-3xl font-semibold leading-tight">See what is helping—or weakening—your team.</h1>
