@@ -1,9 +1,9 @@
 import { ADVOCATE, PRIMARY_NAV, SITE_URL, createPageMetadata } from "../../lib/site";
 
 export const metadata = createPageMetadata({
-  title: "About Adv. Sahil Shekhar Kothari | Education & Practice",
+  title: "About Adv. Sahil S. Kothari | Education & Credentials",
   description:
-    "Professional profile, education, enrolment, languages and practice information for Adv. Sahil Shekhar Kothari in Baramati, Maharashtra.",
+    "Education, enrolment, accredited mediator training, languages and practice information for Adv. Sahil Shekhar Kothari in Baramati, Maharashtra.",
   path: "/about",
 });
 
@@ -22,7 +22,7 @@ const personSchema = {
     identifier: ADVOCATE.enrollment,
     image: `${SITE_URL}${ADVOCATE.photo}`,
     url: SITE_URL,
-    jobTitle: "Advocate and Mediator",
+    jobTitle: "Advocate and Accredited Mediator",
     knowsLanguage: ["English", "Marathi", "Hindi"],
     alumniOf: ADVOCATE.qualifications
       .filter((qualification) => qualification.institution)
@@ -30,12 +30,24 @@ const personSchema = {
         "@type": "EducationalOrganization",
         name: qualification.institution,
       })),
-    hasCredential: ADVOCATE.qualifications.map((qualification) => ({
-      "@type": "EducationalOccupationalCredential",
-      credentialCategory: "degree",
-      name: qualification.degree,
-    })),
-    sameAs: [ADVOCATE.linkedIn],
+    hasCredential: [
+      ...ADVOCATE.qualifications.map((qualification) => ({
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        name: qualification.degree,
+      })),
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: ADVOCATE.mediationCredential.title,
+        name: ADVOCATE.mediationCredential.programme,
+        description: `${ADVOCATE.mediationCredential.qualityAssurance}; conducted ${ADVOCATE.mediationCredential.period}.`,
+        recognizedBy: [
+          { "@type": "Organization", name: ADVOCATE.mediationCredential.institution },
+          { "@type": "Organization", name: "ADR Register, Global Network Group, Amsterdam" },
+        ],
+      },
+    ],
+    sameAs: [ADVOCATE.linkedIn, ADVOCATE.googleBusinessProfile],
   },
 };
 
@@ -106,6 +118,14 @@ export default function AboutPage() {
           </section>
         </div>
 
+        <section className="mt-12 rounded-2xl border border-amber-200/15 bg-amber-200/5 p-6" aria-labelledby="mediation-credential-heading">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200/80">Mediation credential</p>
+          <h2 id="mediation-credential-heading" className="mt-3 text-2xl font-semibold">{ADVOCATE.mediationCredential.title}</h2>
+          <p className="mt-4 max-w-4xl text-sm leading-7 text-white/75">
+            {ADVOCATE.mediationCredential.programme} by {ADVOCATE.mediationCredential.institution}, {ADVOCATE.mediationCredential.qualityAssurance.toLowerCase()}, conducted in {ADVOCATE.mediationCredential.period}.
+          </p>
+        </section>
+
         <section className="mt-12" aria-labelledby="work-heading">
           <h2 id="work-heading" className="text-2xl font-semibold">Practice information</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -130,6 +150,7 @@ export default function AboutPage() {
 
         <div className="mt-10 flex flex-wrap gap-4 text-sm">
           <a href={ADVOCATE.linkedIn} target="_blank" rel="noreferrer" className="underline hover:text-white">LinkedIn profile</a>
+          <a href={ADVOCATE.googleBusinessProfile} target="_blank" rel="noreferrer" className="underline hover:text-white">Google Business Profile</a>
           <a href="/#practice" className="underline hover:text-white">Practice areas</a>
           <a href="/mediation" className="underline hover:text-white">Mediation information</a>
           <a href="/professional-notice" className="underline hover:text-white">Professional notice</a>

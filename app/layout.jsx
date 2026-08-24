@@ -4,9 +4,9 @@ import { ADVOCATE, SITE_URL } from "../lib/site";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Adv. Sahil S. Kothari | Advocate & Mediator in Maharashtra",
+  title: "Adv. Sahil S. Kothari | Advocate & Accredited Mediator",
   description:
-    "Information on litigation, drafting, advisory and mediation services provided by Adv. Sahil S. Kothari from Baramati, Maharashtra.",
+    "Litigation, drafting, advisory and accredited mediation information from Adv. Sahil S. Kothari in Baramati, Maharashtra.",
   applicationName: "Kothari Vakil",
   alternates: { canonical: SITE_URL },
   robots: {
@@ -25,9 +25,9 @@ export const metadata = {
     locale: "en_IN",
     url: SITE_URL,
     siteName: "Kothari Vakil",
-    title: "Adv. Sahil S. Kothari | Advocate & Mediator in Maharashtra",
+    title: "Adv. Sahil S. Kothari | Advocate & Accredited Mediator",
     description:
-      "Litigation, drafting, advisory and mediation information for individuals and businesses in Maharashtra.",
+      "Litigation, drafting, advisory and accredited mediation information from Baramati for individuals and businesses in Maharashtra.",
     images: [
       {
         url: `${SITE_URL}/og.png`,
@@ -39,9 +39,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Adv. Sahil S. Kothari | Advocate & Mediator in Maharashtra",
+    title: "Adv. Sahil S. Kothari | Advocate & Accredited Mediator",
     description:
-      "Litigation, drafting, advisory and mediation information for individuals and businesses in Maharashtra.",
+      "Litigation, drafting, advisory and accredited mediation information from Baramati for individuals and businesses in Maharashtra.",
     images: [`${SITE_URL}/og.png`],
   },
   icons: {
@@ -67,7 +67,7 @@ const structuredData = {
       identifier: ADVOCATE.enrollment,
       url: SITE_URL,
       image: `${SITE_URL}/ssk-photo.png`,
-      jobTitle: "Advocate and Mediator",
+      jobTitle: "Advocate and Accredited Mediator",
       mainEntityOfPage: `${SITE_URL}/about`,
       knowsLanguage: ["English", "Marathi", "Hindi"],
       knowsAbout: [
@@ -85,20 +85,32 @@ const structuredData = {
           "@type": "EducationalOrganization",
           name: qualification.institution,
         })),
-      hasCredential: ADVOCATE.qualifications.map((qualification) => ({
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "degree",
-        name: qualification.degree,
-        ...(qualification.institution
-          ? {
-              recognizedBy: {
-                "@type": "EducationalOrganization",
-                name: qualification.institution,
-              },
-            }
-          : {}),
-      })),
-      sameAs: [ADVOCATE.linkedIn],
+      hasCredential: [
+        ...ADVOCATE.qualifications.map((qualification) => ({
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "degree",
+          name: qualification.degree,
+          ...(qualification.institution
+            ? {
+                recognizedBy: {
+                  "@type": "EducationalOrganization",
+                  name: qualification.institution,
+                },
+              }
+            : {}),
+        })),
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: ADVOCATE.mediationCredential.title,
+          name: ADVOCATE.mediationCredential.programme,
+          description: `${ADVOCATE.mediationCredential.qualityAssurance}; conducted ${ADVOCATE.mediationCredential.period}.`,
+          recognizedBy: [
+            { "@type": "Organization", name: ADVOCATE.mediationCredential.institution },
+            { "@type": "Organization", name: "ADR Register, Global Network Group, Amsterdam" },
+          ],
+        },
+      ],
+      sameAs: [ADVOCATE.linkedIn, ADVOCATE.googleBusinessProfile],
     },
     {
       "@type": "LegalService",
@@ -118,6 +130,7 @@ const structuredData = {
       },
       founder: { "@id": `${SITE_URL}/#advocate` },
       employee: { "@id": `${SITE_URL}/#advocate` },
+      sameAs: [ADVOCATE.googleBusinessProfile, ADVOCATE.linkedIn],
       areaServed: {
         "@type": "AdministrativeArea",
         name: "Maharashtra, India",

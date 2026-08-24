@@ -170,8 +170,8 @@ function Hero() {
     <section className="pt-20 md:pt-28 pb-12">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Legal counsel and mediation support in Maharashtra.</h1>
-          <p className="mt-4 text-white/80">Information on litigation, drafting, advisory and mediation work from Baramati, with appearances before District Courts, tribunals across Maharashtra and the Bombay High Court.</p>
+          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Legal counsel and accredited mediation support in Maharashtra.</h1>
+          <p className="mt-4 text-white/80">Information on litigation, drafting, advisory and accredited mediation work from Baramati, with appearances before District Courts, tribunals across Maharashtra and the Bombay High Court.</p>
           <p className="mt-2 text-white/70 text-sm">Also known locally as <strong>Kothari Vakil</strong> — English / Marathi (मराठी) / Hindi (हिन्दी).</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="#contact" className="inline-flex items-center rounded-2xl border border-white/10 bg-white/10 px-4 py-2 hover:bg-white/20">Consult Now <ChevronRight className="ml-1 w-4 h-4" /></a>
@@ -495,11 +495,15 @@ function About() {
                 ))}
               </ul>
             </div>
+            <div className="rounded-xl border border-amber-200/15 bg-amber-200/5 p-4">
+              <div className="font-medium text-white">Accredited mediator training</div>
+              <p className="mt-2 text-sm leading-6 text-white/75">{ADVOCATE.mediationCredential.programme} by {ADVOCATE.mediationCredential.institution}; {ADVOCATE.mediationCredential.qualityAssurance.toLowerCase()}; {ADVOCATE.mediationCredential.period}.</p>
+            </div>
             <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><a href={`tel:${ADVOCATE.phone.split(' ').join('')}`} className="hover:underline">{ADVOCATE.phone}</a></div>
             <div className="flex items-center gap-2"><Mail className="w-4 h-4" /><a href={`mailto:${ADVOCATE.email}`} className="hover:underline">{ADVOCATE.email}</a></div>
             <div className="flex items-center gap-2"><MapPin className="w-4 h-4" />{ADVOCATE.address}</div>
             <div className="flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-sm bg-white/20" />Languages: English • Marathi (मराठी) • Hindi (हिन्दी)</div>
-            <div><a href={ADVOCATE.linkedIn} target="_blank" rel="noreferrer" className="underline hover:text-white">LinkedIn professional profile</a> <span className="text-white/40">•</span> <a href="/about" className="underline hover:text-white">Full professional profile</a></div>
+            <div><a href={ADVOCATE.linkedIn} target="_blank" rel="noreferrer" className="underline hover:text-white">LinkedIn professional profile</a> <span className="text-white/40">•</span> <a href={ADVOCATE.googleBusinessProfile} target="_blank" rel="noreferrer" className="underline hover:text-white">Google Business Profile</a> <span className="text-white/40">•</span> <a href="/about" className="underline hover:text-white">Full professional profile</a></div>
           </div>
         </div>
 
@@ -596,7 +600,7 @@ function Contact() {
               <div className="mt-1">{ADVOCATE.address}</div>
               <div className="mt-3"><span className="text-white/60">Phone:</span> <a className="hover:underline" href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`}>{ADVOCATE.phone}</a></div>
               <div><span className="text-white/60">Email:</span> <a className="hover:underline" href={`mailto:${ADVOCATE.email}`}>{ADVOCATE.email}</a></div>
-              <div className="mt-3"><a className="underline hover:text-white" target="_blank" rel="noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADVOCATE.address)}`}>Open in Google Maps</a></div>
+              <div className="mt-3"><a className="underline hover:text-white" target="_blank" rel="noreferrer" href={ADVOCATE.googleBusinessProfile}>View Google Business Profile and directions</a></div>
             </CardContent>
           </Card>
 
