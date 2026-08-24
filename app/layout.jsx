@@ -61,24 +61,61 @@ const structuredData = {
     {
       "@type": "Person",
       "@id": `${SITE_URL}/#advocate`,
-      name: "Sahil S. Kothari",
+      name: ADVOCATE.fullName,
+      alternateName: ADVOCATE.alternateNames,
       honorificPrefix: "Adv.",
       identifier: ADVOCATE.enrollment,
       url: SITE_URL,
       image: `${SITE_URL}/ssk-photo.png`,
       jobTitle: "Advocate and Mediator",
+      mainEntityOfPage: `${SITE_URL}/about`,
       knowsLanguage: ["English", "Marathi", "Hindi"],
+      knowsAbout: [
+        "Civil litigation",
+        "Criminal procedure and bail",
+        "Real estate and MAHARERA",
+        "Maharashtra public trusts and societies",
+        "Family and matrimonial matters",
+        "Legal drafting and advisory",
+        "Mediation",
+      ],
+      alumniOf: ADVOCATE.qualifications
+        .filter((qualification) => qualification.institution)
+        .map((qualification) => ({
+          "@type": "EducationalOrganization",
+          name: qualification.institution,
+        })),
+      hasCredential: ADVOCATE.qualifications.map((qualification) => ({
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        name: qualification.degree,
+        ...(qualification.institution
+          ? {
+              recognizedBy: {
+                "@type": "EducationalOrganization",
+                name: qualification.institution,
+              },
+            }
+          : {}),
+      })),
       sameAs: [ADVOCATE.linkedIn],
     },
     {
       "@type": "LegalService",
       "@id": `${SITE_URL}/#practice`,
-      name: "Adv. Sahil S. Kothari - Legal and Mediation Practice",
-      alternateName: "Kothari Vakil",
+      name: ADVOCATE.name,
+      alternateName: ADVOCATE.alternateNames,
       url: SITE_URL,
       image: `${SITE_URL}/og.png`,
       telephone: ADVOCATE.phoneHref,
       email: ADVOCATE.email,
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: ADVOCATE.phoneHref,
+        email: ADVOCATE.email,
+        contactType: "appointments and enquiries",
+        availableLanguage: ["English", "Marathi", "Hindi"],
+      },
       founder: { "@id": `${SITE_URL}/#advocate` },
       employee: { "@id": `${SITE_URL}/#advocate` },
       areaServed: {

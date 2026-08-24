@@ -88,6 +88,7 @@ const COURTS = [
 // Site-wide links (used for cross-link blocks)
 const SITE_LINKS = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About the Advocate' },
   { href: '/civil-litigation', label: 'Civil Litigation' },
   { href: '/criminal-bail', label: 'Criminal & Bail' },
   { href: '/rera-real-estate', label: 'RERA & Real Estate' },
@@ -475,7 +476,7 @@ function About() {
         <div>
           <h2 className="text-2xl font-semibold">About the Advocate</h2>
           <p className="mt-4 text-white/80 text-sm leading-relaxed">
-  {ADVOCATE.name} (Enrl. {ADVOCATE.enrollment}) practices across Maharashtra with appearances before
+  Adv. {ADVOCATE.fullName} (Enrl. {ADVOCATE.enrollment}) practices across Maharashtra with appearances before
   District Courts, Tribunals, and the Bombay High Court. The practice blends courtroom advocacy with
   robust drafting—focusing on litigation strategy, precise pleadings, and practical, risk-aware advice.
   As an advocate/lawyer (vakil) based in Baramati and appearing before the Bombay High Court, I assist clients
@@ -483,10 +484,22 @@ function About() {
 </p>
 
           <div className="mt-6 grid gap-3 text-sm text-white/80">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <div className="font-medium text-white">Education</div>
+              <ul className="mt-2 space-y-1 text-white/75">
+                {ADVOCATE.qualifications.map((qualification) => (
+                  <li key={qualification.degree}>
+                    {qualification.degree}
+                    {qualification.institution ? ` — ${qualification.institution}` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><a href={`tel:${ADVOCATE.phone.split(' ').join('')}`} className="hover:underline">{ADVOCATE.phone}</a></div>
             <div className="flex items-center gap-2"><Mail className="w-4 h-4" /><a href={`mailto:${ADVOCATE.email}`} className="hover:underline">{ADVOCATE.email}</a></div>
             <div className="flex items-center gap-2"><MapPin className="w-4 h-4" />{ADVOCATE.address}</div>
             <div className="flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-sm bg-white/20" />Languages: English • Marathi (मराठी) • Hindi (हिन्दी)</div>
+            <div><a href={ADVOCATE.linkedIn} target="_blank" rel="noreferrer" className="underline hover:text-white">LinkedIn professional profile</a> <span className="text-white/40">•</span> <a href="/about" className="underline hover:text-white">Full professional profile</a></div>
           </div>
         </div>
 
@@ -614,6 +627,7 @@ function Footer() {
         </div>
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-4 items-center">
           <a href="/mediation" className="hover:underline">Mediation</a>
+          <a href="/about" className="hover:underline">About</a>
           <a href="/privacy" className="hover:underline">Privacy</a>
           <a href="/professional-notice" className="hover:underline">Professional Notice</a>
           <a href={`tel:${ADVOCATE.phone.replace(/\s/g, "")}`} className="hover:underline flex items-center gap-1"><Phone className="w-4 h-4" /> Call</a>
