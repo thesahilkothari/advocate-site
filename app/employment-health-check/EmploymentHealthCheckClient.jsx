@@ -128,31 +128,34 @@ export default function EmploymentHealthCheckClient() {
       : "from-red-700 to-red-950 border-red-400/30";
 
   return (
-    <div className="min-h-screen bg-[#0B0F14] text-white">
+    <div className="site-shell min-h-screen overflow-hidden bg-[#071218] text-[#f7f2e8]">
       {!consented && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="max-w-xl rounded-3xl border border-white/15 bg-[#111820] p-7 shadow-2xl">
-            <div className="flex items-center gap-3"><Scale className="h-6 w-6" /><h2 className="text-xl font-semibold">Professional notice</h2></div>
-            <p className="mt-4 text-sm leading-7 text-white/70">You are accessing this preliminary self-assessment voluntarily. It provides general information, does not constitute legal advice, creates no advocate–client relationship and makes no guarantee of any outcome.</p>
-            <button className="mt-6 w-full rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#0B0F14]" onClick={() => { localStorage.setItem("bci_disclaimer_ok", "yes"); setConsented(true); }}>I Agree & Continue</button>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[#03080b]/85 p-4 backdrop-blur-lg">
+          <div className="max-w-xl rounded-[2rem] border border-emerald-300/15 bg-[#0c1a20] p-7 shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:p-9">
+            <div className="flex items-center gap-3 text-emerald-300"><Scale className="h-5 w-5" /><span className="text-[10px] font-bold uppercase tracking-[.18em]">Professional notice</span></div>
+            <h2 className="mt-5 font-serif text-3xl text-[#f1fff8]">A preliminary employer self-assessment.</h2>
+            <p className="mt-4 text-sm leading-7 text-white/60">You are accessing this preliminary self-assessment voluntarily. It provides general information, does not constitute legal advice, creates no advocate–client relationship and makes no guarantee of any outcome.</p>
+            <button className="mt-7 w-full rounded-full bg-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-950 transition hover:bg-white" onClick={() => { localStorage.setItem("bci_disclaimer_ok", "yes"); setConsented(true); }}>I Agree & Continue</button>
           </div>
         </div>
       )}
 
-      <header className="border-b border-white/10 bg-[#0B0F14]/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
+      <header className="relative z-20 border-b border-white/[.08] bg-[#071218]/85 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <a href="/" className="flex items-center gap-3">
-            <Image src="/logo-mark.svg" alt="Kothari Vakil" width={40} height={40} className="h-10 w-10 rounded-xl border border-white/10 bg-white/90 p-1" />
-            <span><strong className="block text-sm">Adv. Sahil S. Kothari</strong><small className="text-xs text-white/55">MAH/3210/2024 · Kothari Vakil</small></span>
+            <Image src="/logo-mark.svg" alt="Kothari Vakil" width={40} height={40} className="h-10 w-10 rounded-xl border border-emerald-300/20 bg-[#f7f2e8] p-1" />
+            <span><strong className="block font-serif text-sm sm:text-base"><span className="sm:hidden">Kothari Vakil</span><span className="hidden sm:inline">Adv. Sahil S. Kothari</span></strong><small className="mt-0.5 hidden text-[9px] uppercase tracking-[.15em] text-white/45 sm:block">Maharashtra employer check</small></span>
           </a>
-          <a href="/" className="flex items-center gap-2 text-xs font-medium text-white/70 hover:text-white"><ArrowLeft className="h-4 w-4" /> Advocate profile</a>
+          <a href="/" className="flex items-center gap-2 rounded-full border border-white/10 px-4 py-2.5 text-xs font-medium text-white/65 transition hover:bg-white/[.05] hover:text-white"><ArrowLeft className="h-4 w-4" /> Home</a>
         </div>
       </header>
 
-      <main id="main-content" className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:py-10">
-        <aside className="h-fit rounded-3xl border border-emerald-300/15 bg-gradient-to-br from-emerald-950 to-[#102b27] p-7 lg:sticky lg:top-6">
+      <main id="main-content" className="relative mx-auto grid max-w-7xl gap-5 px-4 py-7 sm:px-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:px-8 lg:py-12">
+        <aside className="relative h-fit overflow-hidden rounded-[2rem] border border-emerald-300/15 bg-[#092720] p-7 shadow-[0_30px_80px_rgba(0,0,0,.18)] lg:sticky lg:top-6">
+          <div className="employer-grid" aria-hidden="true" />
+          <div className="relative">
           <p className="text-[11px] font-bold uppercase tracking-[.18em] text-emerald-300">Maharashtra Employment Health Check</p>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight">See what is helping—or weakening—your team.</h1>
+          <h1 className="mt-4 font-serif text-4xl font-medium leading-[1.02] tracking-tight text-[#edfff7]">See what is helping—or weakening—your team.</h1>
           <p className="mt-4 text-sm leading-6 text-white/65">A preliminary self-assessment for Maharashtra employers covering legal foundations, retention, performance and continuity.</p>
           <ol className="mt-7 grid grid-cols-5 gap-2 lg:grid-cols-1">
             {steps.map((item, index) => (
@@ -163,9 +166,10 @@ export default function EmploymentHealthCheckClient() {
             ))}
           </ol>
           <div className="mt-7 flex gap-3 border-t border-white/10 pt-5 text-xs leading-5 text-white/55"><ShieldCheck className="h-5 w-5 shrink-0 text-emerald-300" /> Preliminary screening—not a matter-specific legal opinion.</div>
+          </div>
         </aside>
 
-        <section className="overflow-hidden rounded-3xl border border-white/10 bg-white text-slate-900 shadow-2xl">
+        <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#fbfaf6] text-slate-900 shadow-[0_35px_100px_rgba(0,0,0,.25)]">
           {step < 4 && (
             <div className="flex items-end justify-between gap-5 border-b border-slate-200 px-6 py-6 md:px-9">
               <div><p className="text-[11px] font-bold uppercase tracking-[.16em] text-emerald-700">Step {step + 1} of 4</p><h2 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">{step === 0 ? "Tell us about your business" : steps[step].label}</h2></div>
