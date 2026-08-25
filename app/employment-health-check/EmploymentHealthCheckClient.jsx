@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, Check, ChevronRight, FileDown, Scale, ShieldCheck } from "lucide-react";
+import { FORM_ACTION } from "../../lib/site";
 
 const dimensions = {
   foundation: { label: "Employment foundation", short: "foundation" },
@@ -80,6 +81,29 @@ const steps = [
   { label: "Report", dimensions: [] },
 ];
 
+const EMPTY_PROFILE = {
+  business: "",
+  industry: "",
+  district: "",
+  headcount: "",
+  contactName: "",
+  email: "",
+  phone: "",
+};
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function isValidEmail(value) {
+  return EMAIL_PATTERN.test(value);
+}
+
+function serializeAnswers(answers) {
+  return questions.map((question, index) => {
+    const score = answers[question.id];
+    const selected = question.options.find(([, value]) => value === score)?.[0] || "Not answered";
+    return `${index + 1}. ${question.prompt}: ${selected} (${score}/4)`;
+  }).join("\n");
+}
+
 function headcount(value) {
   return { "1–9": 5, "10–19": 14, "20–49": 30, "50–99": 70, "100+": 100 }[value] || 0;
 }
@@ -87,9 +111,13 @@ function headcount(value) {
 export default function EmploymentHealthCheckClient() {
   const [consented, setConsented] = useState(false);
   const [step, setStep] = useState(0);
-  const [profile, setProfile] = useState({ business: "", industry: "", district: "", headcount: "", contact: "" });
+  const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [selectedConcerns, setSelectedConcerns] = useState([]);
   const [answers, setAnswers] = useState({});
+  const [leadConsent, setLeadConsent] = useState(false);
+  const [submissionState, setSubmissionState] = useState("idle");
+  const [submissionError, setSubmissionError] = useState("");
+  const [reportSubmittedAt, setReportSubmittedAt] = useState("");
 
   useEffect(() => setConsented(Boolean(localStorage.getItem("bci_disclaimer_ok"))), []);
 
@@ -114,7 +142,8 @@ export default function EmploymentHealthCheckClient() {
   }, [answers, profile.headcount]);
 
   const canContinue = step === 0
-    ? profile.business && profile.industry && profile.district && profile.headcount && selectedConcerns.length
+    ? profile.business && profile.industry && profile.district && profile.headcount && profile.contactName
+      && isValidEmail(profile.email) && selectedConcerns.length && leadConsent
     : step < 4 && stepQuestions.every((q) => answers[q.id] !== undefined);
 
   const toggleConcern = (value) => setSelectedConcerns((current) => current.includes(value)
@@ -126,6 +155,75 @@ export default function EmploymentHealthCheckClient() {
     : report.status === "Orange"
       ? "from-amber-700 to-amber-950 border-amber-400/30"
       : "from-red-700 to-red-950 border-red-400/30";
+
+  const handleAdvance = async () => {
+    if (!canContinue || submissionState === "submitting") return;
+
+    if (step < 3) {
+      setStep((current) => current + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    setSubmissionState("submitting");
+    setSubmissionError("");
+    const submittedAt = new Date().toISOString();
+
+    const payload = {
+      _subject: `Employer Health Check — ${profile.business} — ${report.status} ${report.score}/100`,
+      _format: "plain",
+      enquiry_type: "Maharashtra Employment Health Check",
+      name: profile.contactName,
+      contact_name: profile.contactName,
+      email: profile.email,
+      phone: profile.phone || "Not provided",
+      business_name: profile.business,
+      nature_of_business: profile.industry,
+      city_or_district: profile.district,
+      people_engaged: profile.headcount,
+      selected_concerns: selectedConcerns.join(" | "),
+      report_status: report.status,
+      report_score: `${report.score}/100`,
+      readiness_breakdown: report.breakdown.map((item) => `${item.label}: ${item.score}/100`).join(" | "),
+      priority_areas: report.priorities.map((item) => `${item.label}: ${item.score}/100`).join(" | "),
+      critical_controls: report.critical.length
+        ? report.critical.map((item) => item.prompt).join(" | ")
+        : "None identified by the preliminary scoring rules",
+      assessment_answers: serializeAnswers(answers),
+      consent_record: "Visitor expressly consented to submitting the business profile, assessment answers and generated report for assessment-related review and follow-up by email or phone.",
+      submitted_at: submittedAt,
+      source: "https://www.kotharivakil.in/employment-health-check",
+    };
+
+    try {
+      const response = await fetch(FORM_ACTION, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Submission was not accepted");
+
+      setReportSubmittedAt(submittedAt);
+      setSubmissionState("submitted");
+      setStep(4);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setSubmissionState("error");
+      setSubmissionError("We could not submit the assessment. Please check your connection and try generating the report again.");
+    }
+  };
+
+  const resetAssessment = () => {
+    setStep(0);
+    setAnswers({});
+    setSelectedConcerns([]);
+    setProfile(EMPTY_PROFILE);
+    setLeadConsent(false);
+    setSubmissionState("idle");
+    setSubmissionError("");
+    setReportSubmittedAt("");
+  };
 
   return (
     <div className="site-shell min-h-screen overflow-hidden bg-[#071218] text-[#f7f2e8]">
@@ -185,9 +283,15 @@ export default function EmploymentHealthCheckClient() {
                 <Field label="Jurisdiction"><div className="flex min-h-12 items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-4"><strong className="text-sm text-emerald-900">Maharashtra</strong><small className="text-xs text-emerald-700">Phase 1</small></div></Field>
                 <Field label="City / district in Maharashtra"><input required value={profile.district} onChange={(e) => setProfile({ ...profile, district: e.target.value })} placeholder="e.g. Baramati, Pune" /></Field>
                 <Field label="Total people engaged"><select required value={profile.headcount} onChange={(e) => setProfile({ ...profile, headcount: e.target.value })}><option value="">Select headcount</option><option>1–9</option><option>10–19</option><option>20–49</option><option>50–99</option><option>100+</option></select></Field>
-                <Field label="Email or mobile" optional><input value={profile.contact} onChange={(e) => setProfile({ ...profile, contact: e.target.value })} placeholder="Optional for this assessment" /></Field>
+                <Field label="Your name"><input required autoComplete="name" value={profile.contactName} onChange={(e) => setProfile({ ...profile, contactName: e.target.value })} placeholder="Name of person completing the check" /></Field>
+                <Field label="Email address"><input required type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} placeholder="For assessment-related follow-up" /></Field>
+                <Field label="Mobile number" optional><input type="tel" autoComplete="tel" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="Optional" /></Field>
               </div>
               <fieldset className="mt-8 border-t border-slate-200 pt-7"><legend className="text-sm font-semibold">What concerns you most? <small className="font-normal text-slate-500">Choose up to three</small></legend><div className="mt-3 flex flex-wrap gap-2">{concerns.map((value) => <button type="button" key={value} onClick={() => toggleConcern(value)} className={`rounded-xl border px-3 py-2 text-left text-xs font-medium ${selectedConcerns.includes(value) ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-slate-200 bg-slate-50 text-slate-600 hover:bg-white"}`}>{selectedConcerns.includes(value) ? "✓ " : "+ "}{value}</button>)}</div></fieldset>
+              <label className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-5 text-slate-700">
+                <input required type="checkbox" checked={leadConsent} onChange={(event) => setLeadConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-emerald-700" />
+                <span>I consent to my contact details, business profile, assessment answers and generated report being submitted to Adv. Sahil S. Kothari for review and assessment-related follow-up by email or phone. I have read the <a href="/privacy" target="_blank" rel="noreferrer" className="font-semibold text-emerald-800 underline">privacy notice</a>.</span>
+              </label>
             </div>
           )}
 
@@ -211,12 +315,15 @@ export default function EmploymentHealthCheckClient() {
             </div>
           )}
 
-          {step === 4 && <Report profile={profile} selectedConcerns={selectedConcerns} report={report} resultColors={resultColors} onReset={() => { setStep(0); setAnswers({}); setSelectedConcerns([]); setProfile({ business: "", industry: "", district: "", headcount: "", contact: "" }); }} />}
+          {step === 4 && <Report profile={profile} selectedConcerns={selectedConcerns} report={report} resultColors={resultColors} submittedAt={reportSubmittedAt} onReset={resetAssessment} />}
 
           {step < 4 && (
-            <div className="flex items-center justify-between border-t border-slate-200 px-6 py-5 md:px-9">
-              <button type="button" disabled={step === 0} onClick={() => setStep(step - 1)} className="text-sm font-semibold text-slate-500 disabled:invisible">Back</button>
-              <button type="button" disabled={!canContinue} onClick={() => { setStep(step + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center gap-2 rounded-xl bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-35">{step === 3 ? "Generate my report" : "Continue"}<ChevronRight className="h-4 w-4" /></button>
+            <div className="border-t border-slate-200 px-6 py-5 md:px-9">
+              {submissionError && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs leading-5 text-red-800">{submissionError}</p>}
+              <div className="flex items-center justify-between">
+                <button type="button" disabled={step === 0 || submissionState === "submitting"} onClick={() => setStep(step - 1)} className="text-sm font-semibold text-slate-500 disabled:invisible">Back</button>
+                <button type="button" disabled={!canContinue || submissionState === "submitting"} aria-busy={submissionState === "submitting"} onClick={handleAdvance} className="flex items-center gap-2 rounded-xl bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-35">{step === 3 ? submissionState === "submitting" ? "Submitting assessment…" : "Submit & generate report" : "Continue"}<ChevronRight className="h-4 w-4" /></button>
+              </div>
             </div>
           )}
         </section>
@@ -229,10 +336,11 @@ function Field({ label, optional, children }) {
   return <label className="block"><span className="mb-2 block text-xs font-semibold text-slate-700">{label} {optional && <small className="font-normal text-slate-400">Optional</small>}</span><div className="[&_input]:min-h-12 [&_input]:w-full [&_input]:rounded-xl [&_input]:border [&_input]:border-slate-300 [&_input]:px-4 [&_input]:text-sm [&_input]:outline-none [&_input]:focus:border-emerald-600 [&_select]:min-h-12 [&_select]:w-full [&_select]:rounded-xl [&_select]:border [&_select]:border-slate-300 [&_select]:bg-white [&_select]:px-4 [&_select]:text-sm [&_select]:outline-none [&_select]:focus:border-emerald-600">{children}</div></label>;
 }
 
-function Report({ profile, selectedConcerns, report, resultColors, onReset }) {
+function Report({ profile, selectedConcerns, report, resultColors, submittedAt, onReset }) {
   const programme = report.status === "Red" ? "90-Day Green Foundation" : report.status === "Orange" ? "60-Day Green Upgrade" : "Green Advantage Review";
   return (
     <div className="p-5 md:p-8">
+      <div className="mb-4 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-5 text-emerald-900"><Check className="mt-0.5 h-4 w-4 shrink-0" /><p><strong className="block">Assessment submitted successfully.</strong>Your contact details, answers and this report have been delivered for assessment-related review and follow-up. <span className="text-emerald-800/70">Reference time: {new Date(submittedAt).toLocaleString("en-IN")}</span></p></div>
       <div className={`flex items-center justify-between gap-5 rounded-3xl border bg-gradient-to-br p-6 text-white ${resultColors}`}>
         <div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-white/65">Maharashtra Employment Health Report</p><h2 className="mt-2 text-3xl font-semibold">{profile.business}</h2><p className="mt-1 text-xs text-white/65">{profile.industry} · {profile.headcount} people · {profile.district}</p></div>
         <div className="grid h-24 w-24 shrink-0 place-items-center rounded-full border-8 border-white/20 bg-black/10"><span className="text-center text-xs"><strong className="block text-3xl leading-none">{report.score}</strong>/100</span></div>
