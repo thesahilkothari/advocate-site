@@ -363,7 +363,7 @@ function EmployerHealthCheck() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">For Maharashtra employers</p>
             <h2 id="employment-health-check-title" className="mt-4 max-w-3xl font-serif text-4xl leading-[1.02] tracking-tight text-[#edfff7] md:text-6xl">Turn workplace uncertainty into a visible risk map.</h2>
             <p className="mt-6 max-w-2xl text-sm leading-7 text-emerald-50/65">The structured preliminary assessment reviews employment documents, statutory readiness, retention, performance management and continuity. It generates a Green, Orange or Red readiness report with priority areas.</p>
-            <div className="mt-7 flex flex-wrap items-center gap-4"><a href="/employment-health-check" className="inline-flex items-center rounded-full bg-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-950 transition hover:bg-white">Start the preliminary assessment <ChevronRight className="ml-1 h-4 w-4" /></a><span className="text-xs text-emerald-100/45">No assessment answers are saved</span></div>
+            <div className="mt-7 flex flex-wrap items-center gap-4"><a href="/employment-health-check" className="inline-flex items-center rounded-full bg-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-950 transition hover:bg-white">Start the preliminary assessment <ChevronRight className="ml-1 h-4 w-4" /></a><span className="text-xs text-emerald-100/45">Answers are submitted only after express consent</span></div>
           </div>
           <div className="rounded-3xl border border-emerald-200/15 bg-black/15 p-3 backdrop-blur">
             <div className="grid grid-cols-3 gap-2 border-b border-white/10 p-3 text-center">
