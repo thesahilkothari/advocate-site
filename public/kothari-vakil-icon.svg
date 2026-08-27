@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kothari Vakil">
+  <rect width="64" height="64" rx="15" fill="#071218"/>
+  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="#D9B96E" stroke-width="2"/>
+  <path d="M18 15h8v14.2L38.5 15H49L34.8 30.6 50 49H39.4L26 32.6V49h-8z" fill="#F4D88F"/>
+</svg>
