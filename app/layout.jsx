@@ -46,7 +46,15 @@ export const metadata = {
     images: [{ url: SOCIAL_PREVIEW.url, alt: SOCIAL_PREVIEW.alt }],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/kothari-vakil-icon.svg", type: "image/svg+xml" },
+      { url: "/kothari-vakil-icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" },
+    ],
   },
 };
 
