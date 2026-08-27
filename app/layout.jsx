@@ -1,6 +1,6 @@
 // app/layout.jsx
 import "./globals.css";
-import { ADVOCATE, SITE_URL } from "../lib/site";
+import { ADVOCATE, SITE_URL, SOCIAL_PREVIEW } from "../lib/site";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,10 +30,11 @@ export const metadata = {
       "Litigation, drafting, advisory and accredited mediation information from Baramati for individuals and businesses in Maharashtra.",
     images: [
       {
-        url: `${SITE_URL}/og.png`,
-        width: 1200,
-        height: 630,
-        alt: "Adv. Sahil S. Kothari - Kothari Vakil",
+        url: SOCIAL_PREVIEW.url,
+        width: SOCIAL_PREVIEW.width,
+        height: SOCIAL_PREVIEW.height,
+        type: SOCIAL_PREVIEW.type,
+        alt: SOCIAL_PREVIEW.alt,
       },
     ],
   },
@@ -42,7 +43,7 @@ export const metadata = {
     title: "Adv. Sahil S. Kothari | Advocate & Accredited Mediator",
     description:
       "Litigation, drafting, advisory and accredited mediation information from Baramati for individuals and businesses in Maharashtra.",
-    images: [`${SITE_URL}/og.png`],
+    images: [{ url: SOCIAL_PREVIEW.url, alt: SOCIAL_PREVIEW.alt }],
   },
   icons: {
     icon: "/favicon.ico",
@@ -118,7 +119,7 @@ const structuredData = {
       name: ADVOCATE.name,
       alternateName: ADVOCATE.alternateNames,
       url: SITE_URL,
-      image: `${SITE_URL}/og.png`,
+      image: SOCIAL_PREVIEW.url,
       telephone: ADVOCATE.phoneHref,
       email: ADVOCATE.email,
       contactPoint: {
